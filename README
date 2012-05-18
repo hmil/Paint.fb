@@ -1,0 +1,7 @@
+**** Paint.fb l'application facebook pour dessiner entre amis	****
+	
+INSTALLATION:
+- copier l'arcive git
+- installer les dépendances nodejs (npm install -d)
+(- optionel :  executer "node r.js -o app.build.js" dans le répertoire "public/" 
+	pour obtenir la version de production du client ).
