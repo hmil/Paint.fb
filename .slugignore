@@ -1,3 +1,5 @@
-public/app-dev
+public/app-dev/*
 public/r.js
 public/app.build.js
+README
+.gitignore
