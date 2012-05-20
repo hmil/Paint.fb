@@ -9,5 +9,6 @@ var app = {
 	views: {},
 	init: function () {
 		// Initialisation de l'application ici
+		console.log('app init');
 	}
 };
