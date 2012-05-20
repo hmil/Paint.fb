@@ -32,6 +32,9 @@ app.configure('production', function(){
 app.get('/app-dev', routes.app);
 app.get('/app', routes.app);
 
+//Route spéciale pour mettre en cache le fichier channel
+app.get('/channel.html', routes.channel);
+
 app.listen(process.env.PORT || 3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });

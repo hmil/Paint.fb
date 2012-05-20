@@ -19,3 +19,14 @@ exports.index_d = function(req, res){
 exports.app = function(req, res){
 	res.render('index', {layout: false});
 };
+
+/*
+ * GET and caches the channel file
+ */
+exports.channel = function(req, res, next){
+	var cache_expire = 60*60*24*365;
+	res.header('Pragma', 'public');
+	res.header('Cache-Control', 'max-age='+cache_expire);
+	res.header('Expires', new Date(Date.now()+cache_expire*1000));
+	next();
+};
