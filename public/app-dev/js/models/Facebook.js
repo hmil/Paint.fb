@@ -7,15 +7,27 @@ define(['app', 'lib/backbone', '//connect.facebook.net/en_US/all.js'], function(
 			channelUrl :'//localhost:5000/channel.html',	//Channel file url	
 		},
 
-		initialize : function() {
+		initialize : function(bar) {
+			console.log(this.get('appId'));
 			console.log('Facebook model constructor');
 			FB.init({
-				appId      : this.appId, // App ID
-				channelUrl : this.channelUrl, // Channel File
+				appId      : this.get('appId'), // App ID
+				channelUrl : this.get('channelUrl'), // Channel File
 				status     : true, // check login status
 				cookie     : true, // enable cookies to allow the server to access the session
 				xfbml      : true  // parse XFBML
 			});
+		},
+		
+		login: function(cb){
+			FB.login(function(response) {
+				if (response.authResponse) {
+					cb(true);
+				} else {
+					cb(false);
+				}
+			});
+		
 		}
 	});
 
