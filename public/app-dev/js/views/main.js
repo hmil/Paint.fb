@@ -9,6 +9,10 @@ define(['app', 'lib/backbone'], function(app){
 			//On cache l'écran de chargement maintenant que tous les fichiers sont chargés.
 			this.$('#loading_frame').hide();
 			
+			this.$('#login_button').click(function(){
+				app.models.facebook.login();
+			});
+			
 			this.login_frame = this.$('#login_frame');
 		},
 

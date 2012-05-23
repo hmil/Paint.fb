@@ -29,17 +29,6 @@ define(function(){
 				//L'utilisation d'une fonction anonyme permet de préserver la variable this lors de l'appel de showMainFrame()
 				app.views.main.showMainFrame();
 			});
-		},
-		
-		login: function(){
-			this.models.facebook.login(function(success){
-				if(success == true){
-					console.log('logged in');
-				}
-				else{
-					console.log('not logged in');
-				}			
-			});
 		}
 	};
 });
