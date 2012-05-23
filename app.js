@@ -22,11 +22,13 @@ app.configure(function(){
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   app.get('/', routes.index_d);
+  app.post('/', routes.index_d)
 });
 
 app.configure('production', function(){
   app.use(express.errorHandler());
   app.get('/', routes.index);
+  app.post('/', routes.index)
 });
 
 app.get('/app-dev', routes.app);
