@@ -15,6 +15,8 @@ define(function(){
 			
 			//On instancie le modèle facebook
 			this.models.facebook = new this.Models.Facebook();
+			
+			//instanciation des vues : la vue principale instancie les autres
 			this.views.main = new this.Views.main();
 			
 			//On vérifie que l'utilisateur est connecté
@@ -24,10 +26,6 @@ define(function(){
 					app.views.main.showMainFrame();
 				else
 					app.views.main.showLoginFrame();
-			})
-			.on('login', function(){
-				//L'utilisation d'une fonction anonyme permet de préserver la variable this lors de l'appel de showMainFrame()
-				app.views.main.showMainFrame();
 			});
 		}
 	};

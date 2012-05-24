@@ -4,11 +4,13 @@ html
 		title Paint.fb
 		script(data-main='js/main', src='js/lib/require-jquery.js')
 		link(href="css/bootstrap.min.css", rel="stylesheet")
+		link(href="css/style.css", rel="stylesheet")
 	body
 		#fb-root
-		#content.container-fluid
-			#loading_frame
+		#content
+			#loading_frame.container-fluid
 				h1 Paint on facebook
 				p chargement en cours...
 				img(src='img/ajax-loader.gif')
 			include login_frame
+			include main_frame

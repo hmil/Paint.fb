@@ -4,7 +4,8 @@ require([
 	"lib/backbone",
 	"app",
 	"models/Facebook",
-	"views/main"], function($) {
+	"views/main",
+	"views/menu"], function($) {
     //Toutes les dépendences ont été chargées
     $(function() {
 		//Initialisation de l'application
