@@ -17,7 +17,13 @@ exports.index_d = function(req, res){
  * GET app page
  */
 exports.app = function(req, res){
-	res.render('index', {layout: false});
+	res.render('index', {
+		layout: false,
+		FB: {
+			appId: process.env.FACEBOOK_APP_ID,
+			scope: process.env.FACEBOOK_SCOPE
+		}
+	});
 };
 
 /*

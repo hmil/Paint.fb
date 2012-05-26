@@ -1,10 +1,11 @@
-define(['app', 'lib/backbone', '//connect.facebook.net/en_US/all.js'], function(app){
+define(['app', 'lib/backbone', 'lib/underscore', '//connect.facebook.net/en_US/all.js'], function(app){
 	
 	app.Models.Facebook = Backbone.Model.extend({
 		
 		defaults : {
-			appId : '133910146726405',						//FB App ID
-			channelUrl :'//localhost:5000/channel.html',	//Channel file url	
+			appId : FB_APP_ID,			//FB App ID défini par le moteur de templates dans la vue principale
+			channelUrl :'//'+window.location.host+'/channel.html',	//Channel file url	
+			friendslist: new Array()
 		},
 
 		initialize : function(bar) {
@@ -19,19 +20,30 @@ define(['app', 'lib/backbone', '//connect.facebook.net/en_US/all.js'], function(
 				xfbml      : true  // parse XFBML
 			});
 			
-			FB.Event.subscribe('auth.login', function(response) {
-				_this.trigger('login');
+			FB.Event.subscribe('auth.statusChange', function(response) {
+				if (response.authResponse) {
+					_this.trigger('login');
+				} else {
+					_this.trigger('logout');
+				}
 			});
 		},
 		
 		login: function(cb){
-			FB.login(function(response) {
-				if (response.authResponse) {
-					cb(true);
-				} else {
-					cb(false);
+			FB.login(
+				function(response) {
+					if (response.authResponse) {
+						if($.isFunction(cb))
+							cb(true);
+					} else {
+						if($.isFunction(cb))
+							cb(false);
+					}
+				},
+				{
+					scope: FB_SCOPE
 				}
-			});
+			);
 			return this;
 		},
 		
@@ -40,6 +52,18 @@ define(['app', 'lib/backbone', '//connect.facebook.net/en_US/all.js'], function(
 				cb(response.status);
 			});
 			return this;
+		},
+		
+		refreshFriendsList: function(cb){	
+			var _this = this;
+			
+			FB.Data.query("SELECT uid, name, pic_square, online_presence FROM user WHERE uid IN ( SELECT uid2 FROM friend WHERE uid1 = me()) ORDER BY name")
+			.wait(function(response) {
+				_this.set('friendsList', _.groupBy(response, 'online_presence'));
+				_this.trigger('friendsListRefresh');
+				if($.isFunction(cb))
+					cb(_this.get('friendsList'));
+			});
 		}
 	});
 

@@ -8,6 +8,10 @@ html, body, #content, #main_frame {
 	height: 100%;
 }
 
+#login_frame{
+	margin-top: 50px;
+}
+
 #menu {
 	position: absolute;
 	right: 0px;
