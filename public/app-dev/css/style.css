@@ -18,6 +18,7 @@ html, body, #content, #main_frame {
 	width: 200px;
 	min-width: 20px;
 	height: 100%;
+	overflow: hidden;
 }
 
 #menu_resize {
@@ -29,7 +30,12 @@ html, body, #content, #main_frame {
 }
 
 #conferences {
+	margin-top: 40px;
+	border: 1px black solid;
+}
 
+#friendslist_search{
+	width: 200px;
 }
 
 #friends {

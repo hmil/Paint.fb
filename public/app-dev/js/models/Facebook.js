@@ -5,7 +5,7 @@ define(['app', 'lib/backbone', 'lib/underscore', '//connect.facebook.net/en_US/a
 		defaults : {
 			appId : FB_APP_ID,			//FB App ID défini par le moteur de templates dans la vue principale
 			channelUrl :'//'+window.location.host+'/channel.html',	//Channel file url	
-			friendslist: new Array()
+			friendsList: new Array()
 		},
 
 		initialize : function(bar) {

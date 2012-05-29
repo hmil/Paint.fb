@@ -1,0 +1,5 @@
+script#friendsList_label(type='text/template')
+	| <% _.each(active, function(friend) { %>
+	li
+		a(href='#') <%= friend.name %>
+	| <% }); %>
