@@ -34,10 +34,15 @@ html, body, #content, #main_frame {
 	border: 1px black solid;
 }
 
-#friendslist_search{
-	width: 200px;
+
+#friendslist li a{
+	height: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-#friends {
-
+#friendslist .nav-header{
+	overflow: hidden;
+    width: 200px;
 }

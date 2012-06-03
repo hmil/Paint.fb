@@ -2,7 +2,6 @@ doctype 5
 html
 	head
 		title Paint.fb
-		script(data-main='js/main', src='js/lib/require-jquery.js')
 		link(href="css/bootstrap.min.css", rel="stylesheet")
 		link(href="css/style.css", rel="stylesheet")
 	body
@@ -30,3 +29,4 @@ html
 	script
 		var FB_APP_ID = '#{FB.appId}';
 		var FB_SCOPE = '#{FB.scope}';
+	script(data-main='js/main', src='js/lib/require-jquery.js')

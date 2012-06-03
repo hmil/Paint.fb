@@ -60,7 +60,7 @@ define(['app', 'lib/backbone', 'lib/underscore', '//connect.facebook.net/en_US/a
 			FB.Data.query("SELECT uid, name, pic_square, online_presence FROM user WHERE uid IN ( SELECT uid2 FROM friend WHERE uid1 = me()) ORDER BY name")
 			.wait(function(response) {
 				_this.set('friendsList', _.groupBy(response, 'online_presence'));
-				_this.trigger('friendsListRefresh');
+				_this.trigger('friendsListRefreshed', _this.get('friendsList'));
 				if($.isFunction(cb))
 					cb(_this.get('friendsList'));
 			});
