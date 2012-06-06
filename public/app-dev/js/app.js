@@ -21,6 +21,9 @@ define(function(){
 			
 			//On vérifie que l'utilisateur est connecté
 			this.models.facebook.getLoginStatus(function(status){
+				//On cache l'écran de chargement maintenant que tous les fichiers sont chargés.
+				this.$('#loading_frame').hide();
+			
 				//Selon le statut, on montre l'écran principal ou l'écran de login
 				if(status === 'connected')
 					app.views.main.showMainFrame();

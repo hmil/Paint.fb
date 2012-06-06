@@ -6,10 +6,7 @@ define(['app', 'lib/backbone'], function(app){
 		login_frame: false,
 		main_frame: false,
 		
-		initialize : function() {			
-			//On cache l'écran de chargement maintenant que tous les fichiers sont chargés.
-			this.$('#loading_frame').hide();
-			
+		initialize : function() {						
 			this.initLogin();
 			this.initMainFrame();
 		},
