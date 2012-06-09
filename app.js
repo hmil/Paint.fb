@@ -33,6 +33,7 @@ app.configure('production', function(){
 
 app.get('/app-dev', routes.app);
 app.get('/app', routes.app);
+app.post('/app', routes.app);
 
 //Route spéciale pour mettre en cache le fichier channel
 app.get('/channel.html', routes.channel);
