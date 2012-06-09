@@ -1,5 +1,18 @@
 script#friendslist_label(type='text/template')
-	| <% _.each(active, function(friend) { %>
+
+	li.nav-header En ligne :
+	
+	| <% _.each(_.union(active, idle), function(friend) { %>
 	li
 		a(href='#') <%= friend.name %>
 	| <% }); %>
+	
+	li.nav-header Hors ligne :
+	
+	<% _.each(offline, function(friend) { %>
+	li
+		a(href='#') <%= friend.name %>
+	| <% }); %>
+	
+	
+	

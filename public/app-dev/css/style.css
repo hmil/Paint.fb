@@ -21,6 +21,15 @@ html, body, #content, #main_frame {
 	overflow: hidden;
 }
 
+.menu-container{
+	margin-top: 40px;
+}
+
+.submenu{
+	min-width: 200px;
+	border: 1px black solid;
+}
+
 #menu_resize {
 	height: 100%;
 	float: left;
@@ -29,12 +38,6 @@ html, body, #content, #main_frame {
 	cursor: e-resize;
 }
 
-#conferences {
-	margin-top: 40px;
-	border: 1px black solid;
-}
-
-
 #friendslist li a{
 	height: 18px;
     overflow: hidden;
@@ -42,7 +45,6 @@ html, body, #content, #main_frame {
     white-space: nowrap;
 }
 
-#friendslist .nav-header{
-	overflow: hidden;
-    width: 200px;
+#friendslist-searchform{
+	padding: 6px;
 }

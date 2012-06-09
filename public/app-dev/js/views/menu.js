@@ -79,25 +79,27 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		
 		},
 		
-		update_friends_list: function(rawList){
+		update_friends_list: function(list){
 		
 			//On applique le filtre de recherche
 			var filter = this.friendFilter.val();
 			
-			var list = new Array();
+			var list_clean = new Array();
 			
-			list.active = _.filter(rawList.active, function(elem){
-				if(elem.name.substr(0, filter.length).toLowerCase() == filter.toLowerCase()){
-					return true;
-				}
-				return false;
+			_.each(list, function(set, key){
+				list_clean[key] = _.filter(set, function(elem){
+					if(elem.name.substr(0, filter.length).toLowerCase() == filter.toLowerCase()){
+						return true;
+					}
+					return false;
+				});
 			});
 			
 			//On vide la liste
-			this.friendslist.children('li[class!="nav-header"]').remove();
+			this.friendslist.empty();
 			
 			//On prépare le nouveau contenu
-			var content = $(this.friendLabel(list));
+			var content = $(this.friendLabel(list_clean));
 			//Comportement des liens
 			content.children('a').click(function(){
 				$(this).parent().parent().children('li').removeClass('active');

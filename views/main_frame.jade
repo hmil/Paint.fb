@@ -1,12 +1,15 @@
 #main_frame(style="display: none")
 	#menu
 		#menu_resize
-		#conferences
-		#friends
-			ul.nav.nav-list#friendslist
-				li.nav-header
+		div.menu-container
+			#conferences.submenu
+			#friends.submenu
+				#friendslist-searchform
 					input.input-small.search-query#friendslist_search(type='text', placeholder='Rechercher...')
 					button#friendslist_refresh.btn(title="rafraîchir")
 						i.icon-refresh
+				div
+					ul.nav.nav-list#friendslist
+					
 				
 	#drawing_frame
