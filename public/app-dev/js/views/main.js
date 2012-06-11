@@ -51,6 +51,10 @@ define(['app', 'lib/backbone'], function(app){
 		showMainFrame : function(){
 			this.login_frame.hide();
 			this.main_frame.show();
+			
+			//S'assure que les éléments aient la bonne dimention lors de l'affichage
+			app.views.menu.trigger('resized', app.views.menu.$el.width());
+			
 			return this;
 		}
 

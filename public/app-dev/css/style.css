@@ -30,12 +30,17 @@ html, body, #content, #main_frame {
 	border: 1px black solid;
 }
 
+.submenu h3{
+	padding: 6px;
+}
+
 #menu_resize {
 	height: 100%;
-	float: left;
 	width: 3px;
 	background-color: #555;
 	cursor: e-resize;
+	position: absolute;
+	z-index: 100;
 }
 
 #friendslist li a{
@@ -47,4 +52,7 @@ html, body, #content, #main_frame {
 
 #friendslist-searchform{
 	padding: 6px;
+}
+#conferences{
+	background-color: #eef;
 }

@@ -1,4 +1,4 @@
-define(['app', 'lib/backbone', 'lib/underscore'], function(app){
+define(['app', 'lib/backbone', 'lib/underscore', 'lib/jquery-ui'], function(app){
 
 	app.Views.menu = Backbone.View.extend({
 		el: '#menu',
@@ -7,6 +7,8 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			this.init_resize();
 			
 			this.init_friends_list();
+			
+			this.init_conferences();
 		},
 		
 		init_resize: function(){
@@ -79,6 +81,11 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		
 		},
 		
+		init_conferences : function(){
+			this.$('#conferences');
+		
+		},
+		
 		update_friends_list: function(list){
 		
 			//On applique le filtre de recherche
@@ -101,7 +108,7 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			//On prépare le nouveau contenu
 			var content = $(this.friendLabel(list_clean));
 			//Comportement des liens
-			content.children('a').click(function(){
+			content.children('.friendLabel').click(function(){
 				$(this).parent().parent().children('li').removeClass('active');
 				$(this).parent().addClass('active');
 			});
