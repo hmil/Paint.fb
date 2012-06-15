@@ -8,7 +8,7 @@ define(['app', 'lib/backbone', 'lib/underscore', '//connect.facebook.net/en_US/a
 			friendsList: new Array()
 		},
 
-		initialize : function(bar) {
+		initialize : function() {
 			//On enferme la variable this pour l'utiliser plus tard dans des callbacks
 			var _this = this;
 			

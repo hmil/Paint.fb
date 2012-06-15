@@ -5,6 +5,8 @@ require([
 	"lib/jquery-ui",
 	"app",
 	"models/Facebook",
+	"models/Discussion",
+	"collections/Discussions",
 	"views/main",
 	"views/menu"],
 	function($) {
