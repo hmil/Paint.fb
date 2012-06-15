@@ -88,21 +88,24 @@ define(['app', 'lib/backbone', 'lib/underscore', 'lib/jquery-ui'], function(app)
 		
 		update_friends_list: function(list){
 		
-			//On applique le filtre de recherche
+			//Copie du filtre de recherche
 			var filter = this.friendFilter.val();
 			
-			var list_clean = _.filter(list, function(elem){
-				if(elem.name.substr(0, filter.length).toLowerCase() == filter.toLowerCase()){
-					return true;
-				}
-				return false;
-			});
+			//On applique le filtre et prépare la liste en même temps
+			list = _.groupBy(
+				_.filter(list, function(elem){
+					if(elem.name.substr(0, filter.length).toLowerCase() == filter.toLowerCase()){
+						return true;
+					}
+					return false;
+				})
+			, 'online_presence');
 			
 			//On vide la liste
 			this.friendslist.empty();
 			
 			//On prépare le nouveau contenu
-			var content = $(this.tp_friendLabel({list: _.groupBy(list_clean, 'online_presence')}));
+			var content = $(this.tp_friendLabel({list: list}));
 			//Comportement des liens
 			content.children('.friendLabel').click(function(){
 				$(this).parent().parent().children('li').removeClass('active');

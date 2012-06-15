@@ -3,14 +3,14 @@ script#friendslist_label(type='text/template')
 
 	li.nav-header En ligne :
 	
-	| <% _.each(_.union(list.active, list.idle), function(friend) { %>
+	| <% _.each(_.compact(_.union(list['active'], list['idle'])), function(friend) { %>
 	li
 		a.friendLabel(href='#', data-uid!='<%= friend.uid %>') <%= friend.name %>
 	| <% }); %>
 	
 	li.nav-header Hors ligne :
 	
-	<% _.each(_.union(list.offline, list['null']), function(friend) { %>
+	<% _.each(_.compact(_.union(list['offline'], list['null'])), function(friend) { %>
 	li
 		a.friendLabel(href='#', data-uid!='<%= friend.uid %>') <%= friend.name %>
 	| <% }); %>
