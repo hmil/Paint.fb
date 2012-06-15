@@ -14,23 +14,18 @@ define(['app', 'lib/backbone'], function(app){
 		
 		//Initialise les choses en rapport avec le login
 		initLogin : function(){
-			var _this = this;
-			
+		
 			//Mise en place des méthodes de login
 			this.$('#login_button').click(function(){
 				app.models.facebook.login();
 			});
-			app.models.facebook.on('login', function(){
-				//L'utilisation d'une fonction anonyme permet de préserver la variable this lors de l'appel de showMainFrame()
-				_this.showMainFrame();
-			});
+			app.models.facebook.on('login', this.showMainFrame(), this);
 			
 			this.login_frame = this.$('#login_frame');
 		},
 		
 		//Initialise la mainFrame
 		initMainFrame: function(){
-			var _this = this;
 			//Instanciation des vues
 			app.views.menu = new app.Views.menu();
 			app.views.contentArea = new app.Views.contentArea();
@@ -39,9 +34,12 @@ define(['app', 'lib/backbone'], function(app){
 			this.main_frame = this.$('#main_frame');
 			
 			
-			//Redimentionne la content_area quand le menu est redimentionné
+			//Redimentionne la content_area quand le menu ou la fenêtre est redimentionné
 			app.views.menu.on('resized', function(width){
 				app.views.contentArea.$el.width($(window).width() - width);
+			});
+			$(window).resize(function(){
+				app.views.contentArea.$el.width($(window).width() - app.views.menu.$el.width());
 			});
 		},
 

@@ -1,4 +1,4 @@
-define(['app', 'lib/backbone', 'lib/underscore'], function(app){
+define(['app', 'lib/backbone', 'lib/underscore', 'models/discussion'], function(app){
 
 	app.Collections.Discussions = Backbone.Collection.extend({
 		
@@ -9,6 +9,17 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 				var mbrs = model.get('members');
 				return ( _.indexOf(mbrs, fid) != -1 && mbrs.length == 2); //Si l'ami est présent et est seul
 			});
+		},
+		
+		startWithFriend: function(friendId){
+			var discuss = this.getByFriendId(friendId);
+			if(!discuss){
+				discuss = this.create({members: [friendId, app.models.facebook.get('me')]});
+			}
+			
+			this.trigger('started', discuss);
+			
+			return discuss;
 		}
 	
 	});

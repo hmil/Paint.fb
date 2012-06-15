@@ -5,7 +5,8 @@ define(['app', 'lib/backbone', 'lib/underscore', '//connect.facebook.net/en_US/a
 		defaults : {
 			appId : FB_APP_ID,			//FB App ID défini par le moteur de templates dans la vue principale
 			channelUrl :'//'+window.location.host+'/channel.html',	//Channel file url	
-			friendsList: new Array()
+			friendsList: new Array(),
+			me : 0
 		},
 
 		initialize : function() {
@@ -22,7 +23,9 @@ define(['app', 'lib/backbone', 'lib/underscore', '//connect.facebook.net/en_US/a
 			
 			FB.Event.subscribe('auth.statusChange', function(response) {
 				if (response.authResponse) {
+					_this.set('me', response.authResponse.userID);
 					_this.trigger('login');
+					
 				} else {
 					_this.trigger('logout');
 				}

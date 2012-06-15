@@ -1,13 +1,22 @@
 
 script#content_friendInfo(type='text/template')
-	.container-fluid
-		h2 Dessiner avec <%= name %>
-		
-		p <%= name %> est 
-			strong
-				<% if(online_presence == 'offline' || online_presence == 'null'){ %>
-				| 	hors ligne
-				| <% } else{ %>
-				| 	en ligne
-				| <% } %>
-			| Cliquez sur l'un des boutons ci-dessous pour commencer une discussion ou pour l'ajouter à une discussion existante.
+	.container
+		.row
+			.span12
+			h2 Dessiner avec <%= name %>
+			
+			p <%= name %> est 
+				strong
+					<% if(online_presence == 'offline' || online_presence == 'null'){ %>
+					| 	hors ligne
+					| <% } else{ %>
+					| 	en ligne
+					| <% } %>
+				| Cliquez sur l'un des boutons ci-dessous pour commencer une discussion ou pour l'ajouter à une discussion existante.
+		.row
+			.span5.offset1
+				a(href='#')#start-convers-button.btn.btn-large.btn-primary Commencer une discussion
+			.span6
+				a(href='#')#addto-convers-button.btn.btn-large
+					i.icon-plus 
+					|  Ajouter à une discussion

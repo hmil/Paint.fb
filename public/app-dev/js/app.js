@@ -16,6 +16,9 @@ define(function(){
 			//On instancie le modèle facebook
 			this.models.facebook = new this.Models.Facebook();
 			
+			//Instanciation des collections
+			this.collections.discussions = new this.Collections.Discussions();
+			
 			//instanciation des vues : la vue principale instancie les autres
 			this.views.main = new this.Views.main();
 			
