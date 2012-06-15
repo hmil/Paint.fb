@@ -8,7 +8,8 @@ require([
 	"models/Discussion",
 	"collections/Discussions",
 	"views/main",
-	"views/menu"],
+	"views/menu",
+	"views/contentArea"],
 	function($) {
 		//Toutes les dépendences ont été chargées
 		$(function() {

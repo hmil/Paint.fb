@@ -4,8 +4,10 @@ html, body, #content, #main_frame {
 	height: 100%;
 }
 
-#drawing_frame {
-	height: 100%;
+#content_area {
+	bottom: 0;
+    position: absolute;
+    top: 40px;
 }
 
 #login_frame{

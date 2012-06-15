@@ -40,7 +40,7 @@ define(['app', 'lib/backbone', 'lib/underscore', 'lib/jquery-ui'], function(app)
 		init_friends_list: function(){
 			//Définition des éléments et templates
 			this.friendslist = this.$('#friendslist');
-			this.friendLabel = _.template($('#friendslist_label').html());
+			this.tp_friendLabel = _.template($('#friendslist_label').html());
 			this.friendFilter = this.$('#friendslist_search');
 			
 			var _this = this;
@@ -91,26 +91,24 @@ define(['app', 'lib/backbone', 'lib/underscore', 'lib/jquery-ui'], function(app)
 			//On applique le filtre de recherche
 			var filter = this.friendFilter.val();
 			
-			var list_clean = new Array();
-			
-			_.each(list, function(set, key){
-				list_clean[key] = _.filter(set, function(elem){
-					if(elem.name.substr(0, filter.length).toLowerCase() == filter.toLowerCase()){
-						return true;
-					}
-					return false;
-				});
+			var list_clean = _.filter(list, function(elem){
+				if(elem.name.substr(0, filter.length).toLowerCase() == filter.toLowerCase()){
+					return true;
+				}
+				return false;
 			});
 			
 			//On vide la liste
 			this.friendslist.empty();
 			
 			//On prépare le nouveau contenu
-			var content = $(this.friendLabel(list_clean));
+			var content = $(this.tp_friendLabel({list: _.groupBy(list_clean, 'online_presence')}));
 			//Comportement des liens
 			content.children('.friendLabel').click(function(){
 				$(this).parent().parent().children('li').removeClass('active');
 				$(this).parent().addClass('active');
+				
+				app.views.contentArea.showFriendInfo(app.models.facebook.getFriend($(this).attr('data-uid')));
 			});
 			
 			//Ajout du contenu dans la liste

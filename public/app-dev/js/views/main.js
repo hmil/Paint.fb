@@ -33,12 +33,15 @@ define(['app', 'lib/backbone'], function(app){
 			var _this = this;
 			//Instanciation des vues
 			app.views.menu = new app.Views.menu();
+			app.views.contentArea = new app.Views.contentArea();
+			
 			//Sauvegarde un instance de l'objet jquery de la mainframe
 			this.main_frame = this.$('#main_frame');
 			
-			//Redimentionne la drawing_frame quand le menu est redimentionné
+			
+			//Redimentionne la content_area quand le menu est redimentionné
 			app.views.menu.on('resized', function(width){
-				_this.$('#drawing_frame').width($(window).width() - width);
+				app.views.contentArea.$el.width($(window).width() - width);
 			});
 		},
 
