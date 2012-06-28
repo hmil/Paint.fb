@@ -19,7 +19,7 @@ define(['app', 'lib/backbone'], function(app){
 			this.$('#login_button').click(function(){
 				app.models.facebook.login();
 			});
-			app.models.facebook.on('login', this.showMainFrame(), this);
+			app.models.facebook.on('login', this.showMainFrame, this);
 			
 			this.login_frame = this.$('#login_frame');
 		},
