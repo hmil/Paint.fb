@@ -50,7 +50,7 @@ html, body, #content, #main_frame {
 }
 
 #friendslist-searchform{
-	padding: 6px;
+	padding: 0 15px;
 }
 #conferences{
 	background-color: #eef;
