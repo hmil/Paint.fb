@@ -9,6 +9,7 @@ require([
 	"collections/Discussions",
 	"views/main",
 	"views/menu",
+	"views/friendsList",
 	"views/contentArea"],
 	function($) {
 		//Toutes les dépendences ont été chargées
