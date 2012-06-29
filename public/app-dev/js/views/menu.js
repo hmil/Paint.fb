@@ -2,7 +2,7 @@ define(['app',
 		'lib/backbone',
 		'lib/underscore',
 		'views/friendsList',
-		'views/conferences'], function(app){
+		'views/discussions'], function(app){
 
 	app.Views.menu = Backbone.View.extend({
 		el: '#menu',
@@ -12,7 +12,7 @@ define(['app',
 			
 			app.views.friendsList = new app.Views.friendsList();
 			
-			app.views.conferences = new app.Views.conferences();
+			app.views.discussions = new app.Views.discussions();
 		},
 		
 		init_resize: function(){
