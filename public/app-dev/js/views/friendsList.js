@@ -8,7 +8,7 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			this.list = this.$('#friendslist');
 			this.filter = this.$('#friendslist_search');
 			
-			this.tp_label = _.template($('#friendslist_label').html());
+			this.template = _.template($('#tp_friendsList').html());
 			
 			var _this = this;
 			
@@ -66,7 +66,7 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			this.list.empty();
 			
 			//On prépare le nouveau contenu
-			var content = $(this.tp_label({list: list}));
+			var content = $(this.template({list: list}));
 			//Comportement des liens
 			content.children('.friendLabel').click(function(){
 				$(this).parent().parent().children('li').removeClass('active');

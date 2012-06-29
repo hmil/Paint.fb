@@ -1,4 +1,8 @@
-define(['app', 'lib/backbone', 'lib/underscore', 'views/friendsList'], function(app){
+define(['app', 
+		'lib/backbone',
+		'lib/underscore',
+		'views/friendsList',
+		'views/conferences'], function(app){
 
 	app.Views.menu = Backbone.View.extend({
 		el: '#menu',
@@ -8,7 +12,7 @@ define(['app', 'lib/backbone', 'lib/underscore', 'views/friendsList'], function(
 			
 			app.views.friendsList = new app.Views.friendsList();
 			
-			this.init_conferences();
+			app.views.conferences = new app.Views.conferences();
 		},
 		
 		init_resize: function(){
@@ -35,11 +39,6 @@ define(['app', 'lib/backbone', 'lib/underscore', 'views/friendsList'], function(
 				.bind('mouseup', onMouseup);
 				return false;
 			});
-		},
-		
-		init_conferences : function(){
-			this.$('#conferences');
-		
 		}
 
 	});

@@ -1,5 +1,8 @@
 
-define(['app', 'lib/backbone'], function(app){
+define(['app', 
+		'lib/backbone',
+		'views/menu',
+		'views/contentArea'], function(app){
 
 	app.Views.main = Backbone.View.extend({
 		el: '#content',
