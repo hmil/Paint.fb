@@ -23,7 +23,13 @@ define(['app', 'lib/backbone', 'lib/underscore', '//connect.facebook.net/en_US/a
 			
 			FB.Event.subscribe('auth.statusChange', function(response) {
 				if (response.authResponse) {
-					_this.set('me', response.authResponse.userID);
+					/* L'utilisateur est connecté */
+					
+					//On cherche ses renseignements
+					FB.api('/me', function(me) {
+						_this.set('me', me);
+					});
+	
 					_this.trigger('login');
 					
 				} else {
