@@ -26,8 +26,9 @@ define(['app', 'lib/backbone', 'lib/underscore', '//connect.facebook.net/en_US/a
 					/* L'utilisateur est connecté */
 					
 					//On cherche ses renseignements
-					FB.api('/me', function(me) {
-						_this.set('me', me);
+					FB.Data.query("SELECT uid, name FROM user WHERE uid = me()")
+					.wait(function(me) {
+						_this.set('me', me[0]);
 					});
 	
 					_this.trigger('login');

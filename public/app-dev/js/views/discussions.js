@@ -8,31 +8,52 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			this.label = _.template($('#tp_conferenceLabel').html());
 			this.list = this.$('#discussionsList');
 			
-			app.collections.discussions.bind('started', function(discuss){
+			app.collections.discussions.on('started', this.startDiscussion, this)
+										.on('selected', this.selectDiscussion, this);
+		},
+		
+		startDiscussion: function(discuss){
+			var _this = this;
+			
+			/* on crée le nom de la discussion avec ceux des participants */
+			//Compact supprime les valeurs nulles
+			var name = _.compact(
 				
-				/* on crée le nom de la discussion avec ceux des participants */
-				//Compact supprime les valeurs nulles
-				var name = _.compact(
-					
-					//Grâce à map, on crée un array contenant uniquement les noms
-					//Et on filtre le nom de l'utilisateur courant.
-					_.map(discuss.get('members'),
-						function(val){
-							if(val.name != app.models.facebook.get('me').name)
-						return val.name;
-					}))
-				//Join transforme l'array en une chaine
-				.join(', ');
-				
-				var content = $(this.label({name: name}))
-				
-				.click(function(){
-					$(this).parent().children('li').removeClass('active');
-					$(this).addClass('active');
-				});
-				this.list.append(content);
-				
-			}, this);
+				//Grâce à map, on crée un array contenant uniquement les noms
+				//Et on filtre le nom de l'utilisateur courant.
+				_.map(discuss.get('members'),
+					function(val){
+						if(val.name != app.models.facebook.get('me').name)
+					return val.name;
+				}))
+			//Join transforme l'array en une chaine
+			.join(', ');			
+			
+			var content = $(this.label({name: name}))
+			.click(function(){
+				_this.selectLabel($(this));
+				//On demande à la contentArea d'afficher la discussion courante
+				//On profite de la closure pour utiliser discuss
+				app.views.contentArea.switchDiscussion(discuss);
+			});
+			
+			//On ajoute le label à la liste
+			this.list.append(content);
+			//Puis on le sélectionne
+			this.selectLabel(content);
+			
+			//On enregistre le label dans la discussion pour pouvoir s'en servir plus tard
+			discuss.set('label', content);
+		},
+		
+		selectDiscussion: function(discuss){	
+			this.selectLabel(discuss.get('label'));
+		},
+		
+		selectLabel: function(label){
+			label.parent().children('li').removeClass('active');
+			label.addClass('active');
 		}
+		
 	});
 });

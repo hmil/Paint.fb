@@ -8,6 +8,7 @@ html, body, #content, #main_frame {
 	bottom: 0;
     position: absolute;
     top: 40px;
+	overflow: hidden;
 }
 
 #login_frame{

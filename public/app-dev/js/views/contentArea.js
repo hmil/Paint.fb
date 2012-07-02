@@ -7,7 +7,8 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			this.tp_friendInfo = _.template($('#tp_friendInfo').html());
 			this.tp_drawing = _.template($('#tp_drawingBench').html());
 			
-			app.collections.discussions.on('started', this.startDiscussion, this);
+			app.collections.discussions	.on('started', this.switchDiscussion, this)
+										.on('selected', this.switchDiscussion, this);
 		},
 		
 		showFriendInfo : function(friend){
@@ -30,7 +31,7 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		
 		},
 		
-		startDiscussion: function(discuss){
+		switchDiscussion: function(discuss){
 			/* On génère le contenu grâce à la template */
 			var content = $(this.tp_drawing());
 			
