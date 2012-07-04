@@ -59,4 +59,39 @@ html, body, #content, #main_frame {
 	height: 100%;
 	width: 60px;
 	background-color: #666;
+	padding-top: 10px;
+}
+
+.toolButton {
+	float: left;
+	height: 45px;
+	width: 45px;
+	background-image: url("../img/icons.png");
+	margin: 6px 7px;
+	background-color: #999;
+	-moz-transition-property: background-color;
+	-moz-transition-duration: 700ms;
+	-webkit-transition-property: background-color;
+	-webkit-transition-duration: 700ms;
+	cursor: pointer;
+}
+
+.toolButton:hover {
+	background-color: #d0d0d9;
+}
+
+.tool_paint {
+	background-position: 0 0;
+}
+
+.tool_rect {
+	background-position: 90px 0;
+}
+
+.tool_circle {
+	background-position: 135px 0;
+}
+
+.tool_line {
+	background-position: 45px 0;
 }

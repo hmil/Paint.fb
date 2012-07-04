@@ -37,8 +37,6 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			
 			/* On affiche l'espace de dessin */
 			this.$el.empty().append(content);
-			
-			console.log(discuss);
 		}
 	});
 });
