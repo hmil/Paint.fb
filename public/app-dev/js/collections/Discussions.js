@@ -1,4 +1,4 @@
-define(['app', 'lib/backbone', 'lib/underscore', 'models/discussion'], function(app){
+define(['app', 'lib/backbone', 'lib/underscore', 'models/Discussion'], function(app){
 
 	app.Collections.Discussions = Backbone.Collection.extend({
 		
