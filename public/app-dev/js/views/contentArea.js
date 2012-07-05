@@ -5,7 +5,6 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		
 		initialize : function(){
 			this.tp_friendInfo = _.template($('#tp_friendInfo').html());
-			this.tp_drawing = _.template($('#tp_drawingBench').html());
 			
 			app.collections.discussions	.on('started', this.switchDiscussion, this)
 										.on('selected', this.switchDiscussion, this);
@@ -27,16 +26,15 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			});
 			
 			/* Et on l'affiche */
+			this.$el.children().detach();
 			this.$el.empty().append(content);
 		
 		},
 		
 		switchDiscussion: function(discuss){
-			/* On génère le contenu grâce à la template */
-			var content = $(this.tp_drawing());
-			
 			/* On affiche l'espace de dessin */
-			this.$el.empty().append(content);
+			this.$el.children().detach();
+			this.$el.empty().append(app.views.drawingBench.getBench(discuss));
 		}
 	});
 });

@@ -73,6 +73,10 @@ html, body, #content, #main_frame {
 	-moz-transition-duration: 700ms;
 	-webkit-transition-property: background-color;
 	-webkit-transition-duration: 700ms;
+	-o-transition-property: background-color;
+	-o-transition-duration: 700ms;
+	-ms-transition-property: background-color;
+	-ms-transition-duration: 700ms;
 	cursor: pointer;
 }
 

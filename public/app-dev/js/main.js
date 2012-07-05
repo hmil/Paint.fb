@@ -7,6 +7,7 @@ require([
 	"models/Facebook",
 	"models/Discussion",
 	"collections/Discussions",
+	"collections/Tools",
 	"views/main"],
 	function($) {
 		//Toutes les dépendences ont été chargées

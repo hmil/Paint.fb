@@ -18,6 +18,7 @@ define(function(){
 			
 			//Instanciation des collections
 			this.collections.discussions = new this.Collections.Discussions();
+			this.collections.tools = new this.Collections.Tools();
 			
 			//instanciation des vues : la vue principale instancie les autres
 			this.views.main = new this.Views.main();

@@ -2,7 +2,8 @@
 define(['app', 
 		'lib/backbone',
 		'views/menu',
-		'views/contentArea'], function(app){
+		'views/contentArea', 
+		'views/drawingBench'], function(app){
 
 	app.Views.main = Backbone.View.extend({
 		el: '#content',
@@ -31,6 +32,7 @@ define(['app',
 		initMainFrame: function(){
 			//Instanciation des vues
 			app.views.menu = new app.Views.menu();
+			app.views.drawingBench = new app.Views.drawingBench();
 			app.views.contentArea = new app.Views.contentArea();
 			
 			//Sauvegarde un instance de l'objet jquery de la mainframe
