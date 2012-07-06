@@ -1,4 +1,11 @@
-define(['app', 'lib/backbone', 'lib/underscore', '//connect.facebook.net/en_US/all.js'], function(app){
+define([
+	'app', 
+	'lib/backbone',
+	'lib/underscore'
+	//*
+	, '//connect.facebook.net/en_US/all.js'
+	//*/
+	], function(app){
 	
 	app.Models.Facebook = Backbone.Model.extend({
 		
@@ -13,6 +20,7 @@ define(['app', 'lib/backbone', 'lib/underscore', '//connect.facebook.net/en_US/a
 			//On enferme la variable this pour l'utiliser plus tard dans des callbacks
 			var _this = this;
 			
+			//*
 			FB.init({
 				appId      : this.get('appId'), // App ID
 				channelUrl : this.get('channelUrl'), // Channel File
@@ -23,7 +31,7 @@ define(['app', 'lib/backbone', 'lib/underscore', '//connect.facebook.net/en_US/a
 			
 			FB.Event.subscribe('auth.statusChange', function(response) {
 				if (response.authResponse) {
-					/* L'utilisateur est connecté */
+					//L'utilisateur est connecté 
 					
 					//On cherche ses renseignements
 					FB.Data.query("SELECT uid, name FROM user WHERE uid = me()")
@@ -37,6 +45,14 @@ define(['app', 'lib/backbone', 'lib/underscore', '//connect.facebook.net/en_US/a
 					_this.trigger('logout');
 				}
 			});
+			//*/
+			
+			/* OFFLINE MODE
+			window.setTimeout(function(){
+				_this.set('me', {name: "MILANO", uid: "00123456789"});
+				_this.trigger('login');
+			}, 1000);
+			//*/
 		},
 		
 		login: function(cb){
@@ -58,15 +74,23 @@ define(['app', 'lib/backbone', 'lib/underscore', '//connect.facebook.net/en_US/a
 		},
 		
 		getLoginStatus: function(cb){
+			//*
 			FB.getLoginStatus(function(response) {
 				cb(response.status);
 			});
+			//*/
+			
+			
+			/* OFFLINE MODE
+				cb('connected');
+			//*/
 			return this;
 		},
 		
 		refreshFriendsList: function(cb){	
 			var _this = this;
 			
+			//*
 			FB.Data.query("SELECT uid, name, pic_square, online_presence FROM user WHERE uid IN ( SELECT uid2 FROM friend WHERE uid1 = me()) ORDER BY name")
 			.wait(function(response) {
 				_this.set('friendsList', response);
@@ -74,6 +98,21 @@ define(['app', 'lib/backbone', 'lib/underscore', '//connect.facebook.net/en_US/a
 				if($.isFunction(cb))
 					cb(_this.get('friendsList'));
 			});
+			//*/
+			
+			/* OFFLINE MODE
+			
+			this.set('friendsList', [
+					{uid: "0987654321", name: "John smith", online_presence: "active"},
+					{uid: "06785865674321", name: "Johana smithers", online_presence: "offline"},
+					{uid: "098765432143322", name: "Mike O'riley", online_presence: "idle"},
+					{uid: "243578986875", name: "Anthon Billy", online_presence: "null"},
+				]);
+			if($.isFunction(cb))
+				cb(this.get('friendsList'));
+				
+			this.trigger('friendsListRefreshed', _this.get('friendsList'));
+			// END OFFLINE MODE */
 		},
 		
 		getFriend: function(id){
