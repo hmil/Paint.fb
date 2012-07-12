@@ -19,6 +19,10 @@ define([
 				_this.switchTool($(this).attr('data-tool'));
 			});
 			
+			this.contents.find('.colorButton').click(function(){
+				console.log('colorClick');
+			});
+			
 			/*	On déclare la variable discuss qui contiens la discussion actuellement affichée 
 				mais on ne l'initialise pas. */
 			this.discuss = false;
