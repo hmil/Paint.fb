@@ -1,26 +1,26 @@
 define([
 	'app', 
 	'lib/backbone', 
-	'lib/underscore',
-	'collections/Tools'
+	'lib/underscore', 
+	'collections/Tools',
+	'views/colorPalette'
 ], function(app){
 
 	app.Views.drawingBench = Backbone.View.extend({
-		el: '#content_area',
-		
+	
 		initialize : function(){
 		
 			/* On génère le contenu grâce à la template */
-			this.contents = $(_.template($('#tp_drawingBench').html())());
+			this.$el = $(_.template($('#tp_drawingBench').html())());
 			
 			var _this = this;
 			
-			this.contents.find('.toolButton').click(function(){
+			this.$el.find('.toolButton').click(function(){
 				_this.switchTool($(this).attr('data-tool'));
 			});
 			
-			this.contents.find('.colorButton').click(function(){
-				console.log('colorClick');
+			this.palette = new app.Views.ColorPalette({
+				el: this.$el.find('#colorPalette')
 			});
 			
 			/*	On déclare la variable discuss qui contiens la discussion actuellement affichée 
@@ -29,9 +29,7 @@ define([
 		},
 		
 		getBench: function(discuss){	
-			this.discuss = discuss;
-			
-			return this.contents;
+			return this.$el;
 		},
 		
 		switchTool: function(toolName){
