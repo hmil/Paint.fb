@@ -35,6 +35,12 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			/* On affiche l'espace de dessin */
 			this.$el.children().detach();
 			this.$el.empty().append(app.views.drawingBench.getBench(discuss));
+		},
+		
+		resize: function(size){
+			this.$el.width(size);
+			
+			this.trigger('resized', size);
 		}
 	});
 });

@@ -23,12 +23,23 @@ define([
 				el: this.$el.find('#colorPalette')
 			});
 			
+			this.canvas = this.$('#canvas');
+			this.buffer = this.$('#buffer').mousedown(function(){
+				//TODO : dessin
+			});
+			
+			
+			this.toolBox = this.$('#toolBox');
+			
+			app.views.contentArea.on('resized', this.adjustWidth, this);
+			
 			/*	On déclare la variable discuss qui contiens la discussion actuellement affichée 
 				mais on ne l'initialise pas. */
 			this.discuss = false;
 		},
 		
 		getBench: function(discuss){	
+			this.discuss = discuss;
 			return this.$el;
 		},
 		
@@ -39,6 +50,11 @@ define([
 				console.log('outil inexistant ('+toolName+')');
 			else
 				console.log("choix de l'outil : "+toolName);
+		},
+		
+		adjustWidth: function(width){
+			this.canvas.width(width - this.toolBox.width());
+			this.buffer.width(width - this.toolBox.width());
 		}
 	});
 });

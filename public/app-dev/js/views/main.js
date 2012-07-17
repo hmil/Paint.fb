@@ -31,9 +31,9 @@ define(['app',
 		//Initialise la mainFrame
 		initMainFrame: function(){
 			//Instanciation des vues
+			app.views.contentArea = new app.Views.contentArea();
 			app.views.menu = new app.Views.menu();
 			app.views.drawingBench = new app.Views.drawingBench();
-			app.views.contentArea = new app.Views.contentArea();
 			
 			//Sauvegarde un instance de l'objet jquery de la mainframe
 			this.main_frame = this.$('#main_frame');
@@ -41,11 +41,12 @@ define(['app',
 			
 			//Redimentionne la content_area quand le menu ou la fenêtre est redimentionné
 			app.views.menu.on('resized', function(width){
-				app.views.contentArea.$el.width($(window).width() - width);
+				app.views.contentArea.resize($(window).width() - width);
 			});
 			$(window).resize(function(){
-				app.views.contentArea.$el.width($(window).width() - app.views.menu.$el.width());
+				app.views.contentArea.resize($(window).width() - app.views.menu.$el.width());
 			});
+			
 		},
 
 		showLoginFrame : function() {
