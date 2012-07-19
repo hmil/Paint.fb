@@ -8,6 +8,8 @@ define([
 	
 		initialize : function(){
 			
+			var _this = this;
+			
 			var currentColorEl = this.$el.find('.currentColor');
 			
 			//Initialisation des couleurs
@@ -22,8 +24,13 @@ define([
 					$(this).css('background-color', baseColors[i]);
 				i++;
 			})
+			
+			//Lors du click sur un bouton
 			.click(function(){
-				currentColorEl.css('background-color', $(this).css('background-color'));
+				var color = $(this).css('background-color');
+				
+				currentColorEl.css('background-color', color);
+				_this.trigger('colorChanged', color);
 			});
 		},
 	});

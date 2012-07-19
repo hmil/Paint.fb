@@ -7,6 +7,18 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		
 		initialize: function(){
 			
+		},
+		
+		onMousedown: function(){
+		
+		},
+		
+		onMouseup: function(){
+		
+		},
+		
+		onMousemove: function(){
+		
 		}
 	
 	});

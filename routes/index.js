@@ -22,6 +22,10 @@ exports.app = function(req, res){
 		FB: {
 			appId: process.env.FACEBOOK_APP_ID,
 			scope: process.env.FACEBOOK_SCOPE
+		},
+		canvas: {
+			width: 1280,
+			height: 720
 		}
 	});
 };

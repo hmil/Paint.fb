@@ -44,5 +44,5 @@ script#tp_drawingBench(type='text/template')
 						td
 							.colorButton 
 		#drawingArea
-			canvas.drawing_canvas#canvas
-			canvas.drawing_canvas#buffer
+			canvas.drawing_canvas#canvas(width='#{canvas.width}', height='#{canvas.height}')
+			canvas.drawing_canvas#buffer(width='#{canvas.width}', height='#{canvas.height}')
