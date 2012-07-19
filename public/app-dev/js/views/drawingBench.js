@@ -47,21 +47,38 @@ define([
 					});
 					
 				});
-			
-			this.canvasCtx = this.canvas.get()[0].getContext('2d');
-			this.bufferCtx = this.buffer.get()[0].getContext('2d');
-			
+				
 			this.toolBox = this.$('#toolBox');
 			
 			app.views.contentArea.on('resized', this.adjustWidth, this);
 			
+			
 			/*	On déclare la variable discuss qui contiens la discussion actuellement affichée 
 				mais on ne l'initialise pas. */
 			this.discuss = false;
+
+			
+			this.canvasCtx = false; //On initialise le contexte de canvas à false car on veux utiliser le contexte spécifique à la discussion
+			
+			this.bufferCtx = this.buffer.get()[0].getContext('2d');
+			
+			this.canvasDim = {
+				w: this.canvas.attr('width'),
+				h: this.canvas.attr('height')
+			};
+
 		},
 		
 		getBench: function(discuss){	
 			this.discuss = discuss;
+			
+			if(!discuss.canvas){
+				discuss.canvas = this.canvas.clone();
+			}
+			
+			this.$el.find('#canvas').replaceWith(discuss.canvas);
+			this.canvasCtx = discuss.canvas.get()[0].getContext('2d');
+			
 			return this.$el;
 		},
 		
@@ -82,12 +99,21 @@ define([
 		},
 
 		makeEvent: function(evt){
+			var _this = this;
+			
+			//TODO : evenement réutilisable
 			return {
 				x: Math.round((evt.pageX - this.buffer.offset().left)*this.buffer.attr('width')/this.buffer.width()),
 				y: Math.round((evt.pageY - this.buffer.offset().top)*this.buffer.attr('height')/this.buffer.height()),
 				
+				buffer: this.bufferCtx,
 				canvas: this.canvasCtx,
-				buffer: this.bufferCtx
+				
+				canvasDim: this.canvasDim,
+				
+				clearBuf: function(){
+					_this.bufferCtx.clearRect(0,0, _this.canvasDim.w, _this.canvasDim.h);
+				}
 			};
 		}
 	});
