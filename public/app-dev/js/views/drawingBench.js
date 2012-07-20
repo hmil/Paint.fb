@@ -70,15 +70,16 @@ define([
 		},
 		
 		getBench: function(discuss){	
-			this.discuss = discuss;
-			
-			if(!discuss.canvas){
-				discuss.canvas = this.canvas.clone();
+			if(discuss.cid != this.discuss.cid){
+				this.discuss = discuss;
+				
+				if(!discuss.canvas){
+					discuss.canvas = this.canvas.clone();
+				}
+				
+				this.$el.find('#canvas').replaceWith(discuss.canvas);
+				this.canvasCtx = discuss.canvas.get()[0].getContext('2d');
 			}
-			
-			this.$el.find('#canvas').replaceWith(discuss.canvas);
-			this.canvasCtx = discuss.canvas.get()[0].getContext('2d');
-			
 			return this.$el;
 		},
 		
