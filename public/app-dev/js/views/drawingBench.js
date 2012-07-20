@@ -66,6 +66,21 @@ define([
 				w: this.canvas.attr('width'),
 				h: this.canvas.attr('height')
 			};
+			
+			//Objet servant de base aux évènements envoyés aux outils
+			this.eventObj = {
+				x: 0,
+				y: 0,
+				
+				buffer: this.bufferCtx,
+				canvas: this.canvasCtx,
+				
+				canvasDim: this.canvasDim,
+				
+				clearBuf: function(){
+					_this.bufferCtx.clearRect(0,0, _this.canvasDim.w, _this.canvasDim.h);
+				}
+			};
 
 		},
 		
@@ -83,6 +98,8 @@ define([
 				
 				this.$el.find('#canvas').replaceWith(discuss.canvas);
 				this.canvasCtx = discuss.canvas.get()[0].getContext('2d');
+				
+				this.eventObj.canvas = this.canvasCtx;
 			}
 			return this.$el;
 		},
@@ -108,22 +125,10 @@ define([
 		},
 
 		makeEvent: function(evt){
-			var _this = this;
+			this.eventObj.x = Math.round((evt.pageX - this.buffer.offset().left)*this.buffer.attr('width')/this.buffer.width());
+			this.eventObj.y = Math.round((evt.pageY - this.buffer.offset().top)*this.buffer.attr('height')/this.buffer.height());
 			
-			//TODO : evenement réutilisable
-			return {
-				x: Math.round((evt.pageX - this.buffer.offset().left)*this.buffer.attr('width')/this.buffer.width()),
-				y: Math.round((evt.pageY - this.buffer.offset().top)*this.buffer.attr('height')/this.buffer.height()),
-				
-				buffer: this.bufferCtx,
-				canvas: this.canvasCtx,
-				
-				canvasDim: this.canvasDim,
-				
-				clearBuf: function(){
-					_this.bufferCtx.clearRect(0,0, _this.canvasDim.w, _this.canvasDim.h);
-				}
-			};
+			return this.eventObj;
 		}
 	});
 });
