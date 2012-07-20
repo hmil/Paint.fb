@@ -76,6 +76,10 @@ define([
 				if(!discuss.canvas){
 					discuss.canvas = this.canvas.clone();
 				}
+				else{
+					//dans tout les cas, il faut adapter la largeur du canvas
+					discuss.canvas.width(this.canvas.width());
+				}
 				
 				this.$el.find('#canvas').replaceWith(discuss.canvas);
 				this.canvasCtx = discuss.canvas.get()[0].getContext('2d');
@@ -97,6 +101,10 @@ define([
 		adjustWidth: function(width){
 			this.canvas.width(width - this.toolBox.width());
 			this.buffer.width(width - this.toolBox.width());
+			
+			//On resize aussi le canvas de la discussion en cours
+			if(this.discuss)	
+				this.discuss.canvas.width(width - this.toolBox.width());
 		},
 
 		makeEvent: function(evt){
