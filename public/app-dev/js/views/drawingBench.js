@@ -2,6 +2,7 @@ define([
 	'app', 
 	'lib/backbone', 
 	'lib/underscore', 
+	'lib/jquery-ui',
 	'collections/Tools',
 	'views/colorPalette'
 ], function(app){
@@ -62,12 +63,19 @@ define([
 			
 			this.bufferCtx = this.buffer.get()[0].getContext('2d');
 			
+			//configuration
+			this.bufferCtx.strokeStyle = '#000000';
+			this.bufferCtx.lineWidth = 5;
+			this.bufferCtx.lineCap = 'round';
+			this.bufferCtx.lineJoin = 'round';
+			
 			this.canvasDim = {
 				w: this.canvas.attr('width'),
 				h: this.canvas.attr('height')
 			};
 			
 			//Objet servant de base aux évènements envoyés aux outils
+			//TODO : placer l'évènement dans un modèle
 			this.eventObj = {
 				x: 0,
 				y: 0,
@@ -79,9 +87,37 @@ define([
 				
 				clearBuf: function(){
 					_this.bufferCtx.clearRect(0,0, _this.canvasDim.w, _this.canvasDim.h);
+				},
+				
+				applyStyle: function(){
+					_this.canvasCtx.lineWidth = _this.bufferCtx.lineWidth;
+					_this.canvasCtx.strokeStyle = _this.bufferCtx.strokeStyle;
+					_this.canvasCtx.lineCap = _this.bufferCtx.lineCap;
+					_this.canvasCtx.lineJoin = _this.bufferCtx.lineJoin;
 				}
 			};
-
+			
+			
+			//TODO : déplacer dans la vue appropriée
+			this.$('#brushSizeSlider').slider({
+				min: 1,
+				max: 50,
+				value: 5,
+				slide: function(event, ui){
+					_this.$('#brushSizeInput').val(ui.value);
+					_this.bufferCtx.lineWidth = ui.value;
+				}
+			});
+			
+			this.$('#brushSizeInput').focusout(function(){
+				if(isNaN($(this).val()) || $(this).val() > 50 || $(this).val() < 1){
+					$(this).val(_this.$('#brushSizeSlider').slider('value'));
+				}
+				else{
+					_this.$('#brushSizeSlider').slider('value', $(this).val());
+					_this.bufferCtx.lineWidth = ui.value;
+				}
+			}).val(5);
 		},
 		
 		getBench: function(discuss){	

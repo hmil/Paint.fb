@@ -6,7 +6,7 @@ script#tp_drawingBench(type='text/template')
 			.toolButton.tool_circle(data-tool='circle')
 			.toolButton.tool_line(data-tool='line')
 		#propertyBox
-			#colorPalette
+			#colorPalette.propertyItem
 				.currentColor
 				table
 					tr
@@ -43,6 +43,15 @@ script#tp_drawingBench(type='text/template')
 							.colorButton 
 						td
 							.colorButton 
+			
+			canvas#brushPreview.propertyItem
+			
+			.propertyItem
+				div.clearfix
+					span.pull-left Taille :
+					input#brushSizeInput.pull-left
+				#brushSizeSlider
+				
 		#drawingArea
 			canvas.drawing_canvas#canvas(width='#{canvas.width}', height='#{canvas.height}')
 			canvas.drawing_canvas#buffer(width='#{canvas.width}', height='#{canvas.height}')

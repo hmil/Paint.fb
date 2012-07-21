@@ -16,7 +16,7 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 		
 		onMouseup: function(e){	
 			//initialisation du canvas
-			e.canvas.strokeStyle = e.buffer.strokeStyle;
+			e.applyStyle();
 			
 			//Dessin du trajet
 			this.drawLine(e.canvas, this.p1, {x: e.x, y: e.y});

@@ -10,7 +10,7 @@ define([
 			
 			var _this = this;
 			
-			var currentColorEl = this.$el.find('.currentColor');
+			var currentColorEl = this.$el.find('.currentColor').css('background-color', 'black');
 			
 			//Initialisation des couleurs
 			
