@@ -5,30 +5,48 @@ define([
 	'lib/jquery-ui',
 	'models/DrawingEvent',
 	'collections/Tools',
-	'views/colorPalette'
+	'views/propertyBox'
 ], function(app){
 
 	app.Views.drawingBench = Backbone.View.extend({
 	
 		initialize : function(){
-		
+			//On stocke this dans une variable locale pour s'en servir plus tard
+			var _this = this;
+			
 			/* On génère le contenu grâce à la template */
 			this.$el = $(_.template($('#tp_drawingBench').html())());
 			
-			var _this = this;
+			
+			this.canvasCtx = false; //On initialise le contexte de canvas à false car on veux utiliser le contexte spécifique à la discussion
+			
+			
+			
+			this.bufferCtx = this.buffer.get()[0].getContext('2d');
+			
+			//TODO : initialiser avec le modèle drawingProperties
+			this.bufferCtx.strokeStyle = '#000000';
+			this.bufferCtx.lineWidth = 5;
+			this.bufferCtx.lineCap = 'round';
+			this.bufferCtx.lineJoin = 'round';
+			
+			/* initialisation de la propertybox */
+			var propertyBox = new app.Views.PropertyBox({
+				el: this.$('#propertyBox')
+			});
+			
+			propertyBox.properties.on('change', function(model, c){
+				for(var i in c.changes){
+					this.bufferCtx[i] = model.get(i);
+				}
+			}, this);
+			
+			
 			
 			this.$el.find('.toolButton').click(function(){
 				_this.switchTool($(this).attr('data-tool'));
 			});
-			
-			this.palette = new app.Views.ColorPalette({
-				el: this.$el.find('#colorPalette')
-			}).on('colorChanged', function(col){
-			
-				this.bufferCtx.strokeStyle = col;
-				
-			}, this);
-			
+
 			this.tool = app.collections.tools.first();
 			
 			this.canvas = this.$('#canvas');
@@ -59,18 +77,6 @@ define([
 				mais on ne l'initialise pas. */
 			this.discuss = false;
 
-			
-			this.canvasCtx = false; //On initialise le contexte de canvas à false car on veux utiliser le contexte spécifique à la discussion
-			
-			this.bufferCtx = this.buffer.get()[0].getContext('2d');
-			
-			//configuration
-			this.bufferCtx.strokeStyle = '#000000';
-			this.bufferCtx.lineWidth = 5;
-			this.bufferCtx.lineCap = 'round';
-			this.bufferCtx.lineJoin = 'round';
-			
-	
 			//Objet servant de base aux évènements envoyés aux outils
 			this.eventObj = new app.Models.DrawingEvent({
 				buffer: this.bufferCtx,
@@ -81,27 +87,6 @@ define([
 				}
 			});
 			
-			
-			//TODO : déplacer dans la vue appropriée
-			this.$('#brushSizeSlider').slider({
-				min: 1,
-				max: 50,
-				value: 5,
-				slide: function(event, ui){
-					_this.$('#brushSizeInput').val(ui.value);
-					_this.bufferCtx.lineWidth = ui.value;
-				}
-			});
-			
-			this.$('#brushSizeInput').focusout(function(){
-				if(isNaN($(this).val()) || $(this).val() > 50 || $(this).val() < 1){
-					$(this).val(_this.$('#brushSizeSlider').slider('value'));
-				}
-				else{
-					_this.$('#brushSizeSlider').slider('value', $(this).val());
-					_this.bufferCtx.lineWidth = ui.value;
-				}
-			}).val(5);
 		},
 		
 		getBench: function(discuss){	
