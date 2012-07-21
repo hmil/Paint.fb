@@ -131,6 +131,7 @@ html, body, #content, #main_frame {
 #colorPalette table {
 	border-spacing: 2px;
 	border-collapse: separate;
+	float: left;
 }
 
 .currentColor {
