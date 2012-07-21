@@ -3,6 +3,7 @@ define([
 	'lib/backbone', 
 	'lib/underscore', 
 	'lib/jquery-ui',
+	'models/DrawingEvent',
 	'collections/Tools',
 	'views/colorPalette'
 ], function(app){
@@ -69,33 +70,16 @@ define([
 			this.bufferCtx.lineCap = 'round';
 			this.bufferCtx.lineJoin = 'round';
 			
-			this.canvasDim = {
-				w: this.canvas.attr('width'),
-				h: this.canvas.attr('height')
-			};
-			
+	
 			//Objet servant de base aux évènements envoyés aux outils
-			//TODO : placer l'évènement dans un modèle
-			this.eventObj = {
-				x: 0,
-				y: 0,
-				
+			this.eventObj = new app.Models.DrawingEvent({
 				buffer: this.bufferCtx,
 				canvas: this.canvasCtx,
-				
-				canvasDim: this.canvasDim,
-				
-				clearBuf: function(){
-					_this.bufferCtx.clearRect(0,0, _this.canvasDim.w, _this.canvasDim.h);
-				},
-				
-				applyStyle: function(){
-					_this.canvasCtx.lineWidth = _this.bufferCtx.lineWidth;
-					_this.canvasCtx.strokeStyle = _this.bufferCtx.strokeStyle;
-					_this.canvasCtx.lineCap = _this.bufferCtx.lineCap;
-					_this.canvasCtx.lineJoin = _this.bufferCtx.lineJoin;
+				dimentions: {
+					w: this.canvas.attr('width'),
+					h: this.canvas.attr('height')
 				}
-			};
+			});
 			
 			
 			//TODO : déplacer dans la vue appropriée
