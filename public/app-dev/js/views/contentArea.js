@@ -35,6 +35,10 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			/* On affiche l'espace de dessin */
 			this.$el.children().detach();
 			this.$el.empty().append(app.views.drawingBench.getBench(discuss));
+			
+			// On ajuste la taille de l'espace de travail maintenant qu'il est affiché.
+			// NB : cela n'est utile qu'au premier affichage
+			app.views.drawingBench.adjustSize();
 		},
 		
 		resize: function(size){

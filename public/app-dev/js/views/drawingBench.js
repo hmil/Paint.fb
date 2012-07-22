@@ -46,12 +46,12 @@ define([
 			this.bufferCtx.lineJoin = 'round';
 			
 			/* initialisation de la propertybox */
-			var propertyBox = new app.Views.PropertyBox({
+			this.propertyBox = new app.Views.PropertyBox({
 				el: this.$('#propertyBox')
 			});
 			
 			//Lors d'un changement dans le modèle des propriétés
-			propertyBox.properties.on('change', function(model, c){
+			this.propertyBox.properties.on('change', function(model, c){
 				
 				//On applique ce changement sur le contexte du buffer
 				for(var i in c.changes){
@@ -59,13 +59,10 @@ define([
 				}
 				
 				//Et on rafraîchit la preview de la brush
-				propertyBox.refreshBrushPreview(this.buffer.attr('width')/this.buffer.width());
+				this.propertyBox.refreshBrushPreview(this.buffer.attr('width')/this.buffer.width());
 				
 			}, this);
-			
-			//On rafraichit la preview au démarrage
-			propertyBox.refreshBrushPreview(this.buffer.attr('width')/this.buffer.width());
-			
+		
 			
 			this.$el.find('.toolButton').click(function(){
 				_this.switchTool($(this).attr('data-tool'));
@@ -75,7 +72,7 @@ define([
 				
 			this.toolBox = this.$('#toolBox');
 			
-			app.views.contentArea.on('resized', this.adjustWidth, this);
+			app.views.contentArea.on('resized', this.adjustSize, this);
 			
 			
 			/*	On déclare la variable discuss qui contiens la discussion actuellement affichée 
@@ -103,7 +100,7 @@ define([
 				}
 				else{
 					//dans tout les cas, il faut adapter la largeur du canvas
-					discuss.canvas.width(this.canvas.width());
+					discuss.canvas.width(this.canvas.width()).height(this.canvas.height());
 				}
 				
 				this.$el.find('#canvas').replaceWith(discuss.canvas);
@@ -125,13 +122,41 @@ define([
 			}
 		},
 		
-		adjustWidth: function(width){
-			this.canvas.width(width - this.toolBox.width());
-			this.buffer.width(width - this.toolBox.width());
+		adjustSize: function(){
+			var width = this.$('#drawingArea').width() - this.toolBox.width();
+			
+			var height = this.$('#drawingArea').height();
+			
+			//Les dimentions du canvas
+			var cw = this.canvas.attr('width');
+			var ch = this.canvas.attr('height');
+			
+			//Les nouvelles dimentions
+			var nh, nw;
+			
+			//On calcule les rapports entre la taille dispo et la taille requise
+			var hr = height/ch;
+			var wr = width/cw;
+
+			//Si la hauteur est le facteur limitant
+			if(hr < wr){
+				nh = height;
+				nw = cw*nh/ch;
+			}
+			else{
+				nw = width;
+				nh = ch*nw/cw;
+			}
+			
+			this.canvas.width(nw).height(nh);
+			this.buffer.width(nw).height(nh);
 			
 			//On resize aussi le canvas de la discussion en cours
 			if(this.discuss)	
-				this.discuss.canvas.width(width - this.toolBox.width());
+				this.discuss.canvas.width(nw).height(nh);
+				
+			//On rafraichit la preview lorsque la taille du canvas change
+			this.propertyBox.refreshBrushPreview(this.buffer.attr('width')/this.buffer.width());
 		},
 
 		makeEvent: function(evt){

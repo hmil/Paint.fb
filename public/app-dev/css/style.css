@@ -171,11 +171,16 @@ html, body, #content, #main_frame {
 	position: absolute;
 	bottom: 74px;
 	top: 0px;
+	width: 100%;
+	background-color: grey;
 }
 
 .drawing_canvas {
 	position: absolute;
 	top: 0px;
 	left: 0px;
-	height: 100%;
+}
+
+#canvas {
+	background-color: white;
 }
