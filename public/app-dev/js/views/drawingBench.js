@@ -17,41 +17,8 @@ define([
 			/* On génère le contenu grâce à la template */
 			this.$el = $(_.template($('#tp_drawingBench').html())());
 			
-			
-			this.canvasCtx = false; //On initialise le contexte de canvas à false car on veux utiliser le contexte spécifique à la discussion
-			
-			
-			
-			this.bufferCtx = this.buffer.get()[0].getContext('2d');
-			
-			//TODO : initialiser avec le modèle drawingProperties
-			this.bufferCtx.strokeStyle = '#000000';
-			this.bufferCtx.lineWidth = 5;
-			this.bufferCtx.lineCap = 'round';
-			this.bufferCtx.lineJoin = 'round';
-			
-			/* initialisation de la propertybox */
-			var propertyBox = new app.Views.PropertyBox({
-				el: this.$('#propertyBox')
-			});
-			
-			propertyBox.properties.on('change', function(model, c){
-				for(var i in c.changes){
-					this.bufferCtx[i] = model.get(i);
-				}
-			}, this);
-			
-			
-			
-			this.$el.find('.toolButton').click(function(){
-				_this.switchTool($(this).attr('data-tool'));
-			});
-
-			this.tool = app.collections.tools.first();
-			
 			this.canvas = this.$('#canvas');
 			this.buffer = this.$('#buffer')
-			
 				.mousedown(function(evt){
 					_this.tool.onMousedown(_this.makeEvent(evt));
 					
@@ -67,6 +34,44 @@ define([
 					});
 					
 				});
+			
+			this.canvasCtx = false; //On initialise le contexte de canvas à false car on veux utiliser le contexte spécifique à la discussion
+
+			this.bufferCtx = this.buffer.get()[0].getContext('2d');
+			
+			//TODO : initialiser avec le modèle drawingProperties
+			this.bufferCtx.strokeStyle = '#000000';
+			this.bufferCtx.lineWidth = 5;
+			this.bufferCtx.lineCap = 'round';
+			this.bufferCtx.lineJoin = 'round';
+			
+			/* initialisation de la propertybox */
+			var propertyBox = new app.Views.PropertyBox({
+				el: this.$('#propertyBox')
+			});
+			
+			//Lors d'un changement dans le modèle des propriétés
+			propertyBox.properties.on('change', function(model, c){
+				
+				//On applique ce changement sur le contexte du buffer
+				for(var i in c.changes){
+					this.bufferCtx[i] = model.get(i);
+				}
+				
+				//Et on rafraîchit la preview de la brush
+				propertyBox.refreshBrushPreview(this.buffer.attr('width')/this.buffer.width());
+				
+			}, this);
+			
+			//On rafraichit la preview au démarrage
+			propertyBox.refreshBrushPreview(this.buffer.attr('width')/this.buffer.width());
+			
+			
+			this.$el.find('.toolButton').click(function(){
+				_this.switchTool($(this).attr('data-tool'));
+			});
+
+			this.tool = app.collections.tools.first();
 				
 			this.toolBox = this.$('#toolBox');
 			
