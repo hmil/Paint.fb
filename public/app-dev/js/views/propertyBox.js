@@ -46,7 +46,7 @@ define([
 				}
 			});
 			
-			this.brushSizeInput = this.$('#brushSizeInput').focusout(function(){
+			this.brushSizeInput = this.$('#brushSizeInput').on('change', function(){
 				_this.properties.set({lineWidth: $(this).val()}, {
 					error: function(){
 						_this.brushSizeInput.val(_this.properties.get('lineWidth'));
