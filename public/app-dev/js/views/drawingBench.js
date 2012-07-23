@@ -57,6 +57,8 @@ define([
 					this.propertyBox.refreshBrushPreview(this.buffer.attr('width')/this.buffer.width());
 					
 				}, this)
+				
+				//Initialise le contexte grâce au modèle properties
 				.initContext(this.bufferCtx);
 		
 			
@@ -115,6 +117,9 @@ define([
 			else{
 				console.log("choix de l'outil : "+toolName);
 				this.tool = tool;
+				
+				this.toolBox.children().removeClass('active');
+				this.toolBox.find('[data-tool="'+toolName+'"]').addClass('active');
 			}
 		},
 		
