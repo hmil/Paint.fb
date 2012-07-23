@@ -40,11 +40,17 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 				//Ordonne de rafraichir la liste toutes les 30 secondes
 				window.setInterval(function(){app.models.facebook.refreshFriendsList();}, 60000);
 				
+				//On en profite pour redimentionner la liste
+				_this.resize();
 			})
 			//Lorsque la liste d'amis est mise à jour
 			.on('friendsListRefreshed', function(list){
 				_this.update(list);
 			});
+		},
+		
+		resize: function(){
+			this.$('#friendsViewport').height($(window).height() - $('#friendsViewport').offset().top);
 		},
 		
 		update: function(list){

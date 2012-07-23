@@ -54,6 +54,10 @@ html, body, #content, #main_frame {
 	padding: 0 15px;
 }
 
+#friendsViewport {
+	overflow: auto;
+}
+
 #propertyBox {
 	position: absolute;
 	bottom: 0px;

@@ -10,9 +10,9 @@ define(['app',
 		initialize : function() {
 			this.init_resize();
 			
-			app.views.friendsList = new app.Views.friendsList();
-			
 			app.views.discussions = new app.Views.discussions();
+			
+			app.views.friendsList = new app.Views.friendsList();
 		},
 		
 		init_resize: function(){
@@ -39,6 +39,10 @@ define(['app',
 				.bind('mouseup', onMouseup);
 				return false;
 			});
+		},
+		
+		resize: function(height){
+			app.views.friendsList.resize(height);
 		}
 
 	});

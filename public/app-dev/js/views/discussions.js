@@ -44,6 +44,9 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			
 			//On enregistre le label dans la discussion pour pouvoir s'en servir plus tard
 			discuss.set('label', content);
+			
+			//Comme on a modifié la taille du submenu, on demande au menu de recalculer les tailles
+			app.views.menu.resize();
 		},
 		
 		selectDiscussion: function(discuss){	

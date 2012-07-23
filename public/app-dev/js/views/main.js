@@ -45,6 +45,7 @@ define(['app',
 			});
 			$(window).resize(function(){
 				app.views.contentArea.resize($(window).width() - app.views.menu.$el.width());
+				app.views.menu.resize($(window).height());
 			});
 			
 		},
