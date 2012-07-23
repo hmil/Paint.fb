@@ -39,29 +39,25 @@ define([
 
 			this.bufferCtx = this.buffer.get()[0].getContext('2d');
 			
-			//TODO : initialiser avec le modèle drawingProperties
-			this.bufferCtx.strokeStyle = '#000000';
-			this.bufferCtx.lineWidth = 5;
-			this.bufferCtx.lineCap = 'round';
-			this.bufferCtx.lineJoin = 'round';
-			
 			/* initialisation de la propertybox */
 			this.propertyBox = new app.Views.PropertyBox({
 				el: this.$('#propertyBox')
 			});
 			
 			//Lors d'un changement dans le modèle des propriétés
-			this.propertyBox.properties.on('change', function(model, c){
-				
-				//On applique ce changement sur le contexte du buffer
-				for(var i in c.changes){
-					this.bufferCtx[i] = model.get(i);
-				}
-				
-				//Et on rafraîchit la preview de la brush
-				this.propertyBox.refreshBrushPreview(this.buffer.attr('width')/this.buffer.width());
-				
-			}, this);
+			this.propertyBox.properties
+				.on('change', function(model, c){
+					
+					//On applique ce changement sur le contexte du buffer
+					for(var i in c.changes){
+						this.bufferCtx[i] = model.get(i);
+					}
+					
+					//Et on rafraîchit la preview de la brush
+					this.propertyBox.refreshBrushPreview(this.buffer.attr('width')/this.buffer.width());
+					
+				}, this)
+				.initContext(this.bufferCtx);
 		
 			
 			this.$el.find('.toolButton').click(function(){
