@@ -7,7 +7,8 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			minLineWidth: 1,
 			strokeStyle: 'black',
 			lineCap: 'round',
-			lineJoin: 'round'
+			lineJoin: 'round',
+			font: '20pt Arial'
 		},
 		
 		initialize: function(){
@@ -25,6 +26,7 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			ctx.lineWidth = this.get('lineWidth');
 			ctx.lineCap = this.get('lineCap');
 			ctx.lineJoin = this.get('lineJoin');
+			ctx.font = this.get('font');
 		}
 	
 	});

@@ -6,7 +6,8 @@ define([
 	'models/PaintTool', 
 	'models/LineTool',
 	'models/RectTool',
-	'models/EllipseTool'
+	'models/EllipseTool',
+	'models/TextTool'
 	
 	], function(app){
 
@@ -19,7 +20,8 @@ define([
 					new app.Models.PaintTool(),
 					new app.Models.LineTool(),
 					new app.Models.RectTool(),
-					new app.Models.EllipseTool() 
+					new app.Models.EllipseTool(),
+					new app.Models.TextTool()
 			]);
 		
 		}

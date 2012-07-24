@@ -17,10 +17,7 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		},
 		
 		applyStyle: function(){
-			this.canvas.lineWidth = this.buffer.lineWidth;
-			this.canvas.strokeStyle = this.buffer.strokeStyle;
-			this.canvas.lineCap = this.buffer.lineCap;
-			this.canvas.lineJoin = this.buffer.lineJoin;
+			this.get('properties').initContext(this.canvas);
 		}
 	
 	});

@@ -84,7 +84,8 @@ define([
 				dimentions: {
 					w: this.canvas.attr('width'),
 					h: this.canvas.attr('height')
-				}
+				},
+				properties: this.propertyBox.properties
 			});
 			
 		},

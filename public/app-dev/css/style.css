@@ -121,15 +121,19 @@ html, body, #content, #main_frame {
 }
 
 .tool_rect {
-	background-position: 90px 0;
+	background-position: -90px 0;
 }
 
 .tool_ellipse {
-	background-position: 135px 0;
+	background-position: -45px 0;
 }
 
 .tool_line {
-	background-position: 45px 0;
+	background-position: -135px 0;
+}
+
+.tool_text {
+	background-position: -180px 0;
 }
 
 #colorPalette table {
