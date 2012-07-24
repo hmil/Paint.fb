@@ -61,6 +61,7 @@ define([
 		},
 		
 		refreshBrushPreview: function(canvasRatio){
+			
 			this.brushPreview.fillStyle = this.properties.get('strokeStyle');
 			
 			this.brushPreview.clearRect(0, 0, 100, 100);

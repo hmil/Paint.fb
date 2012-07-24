@@ -4,7 +4,9 @@ define([
 	'lib/underscore', 
 	'models/Tool', 
 	'models/PaintTool', 
-	'models/LineTool'
+	'models/LineTool',
+	'models/RectTool',
+	'models/EllipseTool'
 	
 	], function(app){
 
@@ -15,7 +17,9 @@ define([
 		initialize: function(){
 			this.add([
 					new app.Models.PaintTool(),
-					new app.Models.LineTool()
+					new app.Models.LineTool(),
+					new app.Models.RectTool(),
+					new app.Models.EllipseTool() 
 			]);
 		
 		}
