@@ -19,6 +19,10 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		
 		onMousemove: function(){
 		
+		},
+		
+		updateContext: function(ctx){
+			return ctx;
 		}
 	
 	});

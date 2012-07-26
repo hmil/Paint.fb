@@ -6,6 +6,7 @@ require([
 	"app",
 	"models/Facebook",
 	"models/Discussion",
+	"models/Drawing",
 	"collections/Discussions",
 	"collections/Tools",
 	"views/main"],

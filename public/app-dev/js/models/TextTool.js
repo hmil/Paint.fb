@@ -15,7 +15,6 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool', 'lib/jquery.care
 			this.anchor = {x: 0, y: 0};
 			
 			this.string = '';
-			this.buffer;
 			
 			this.textHeight = 10;
 			
@@ -56,9 +55,8 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool', 'lib/jquery.care
 				this.input.focus();
 				
 				this.anchor = {x: e.x, y: e.y};
-				this.cachedEvent = e;
 				
-				this.textHeight = e.buffer.measureText('m').width;
+				this.textHeight = this.env.get('buffer').measureText('m').width;
 				
 				this.editing = true;
 				this.caretState = false;
@@ -78,31 +76,32 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool', 'lib/jquery.care
 		stopEditing: function(){
 			this.editing = false;
 			
+			var canvas = this.env.get('canvas');
+			
 			window.clearInterval(this.caretInterval);
 			
 			this.input.val('');
 			
-			this.cachedEvent.clearBuf();
+			this.env.clearBuf();
 			
-			this.cachedEvent.applyStyle();
-			
-			this.drawString(this.cachedEvent.canvas);
+			this.updateContext(canvas);
+			this.drawString(canvas);
 		},
 		
 		refresh: function(){
 			this.string = this.input.val();
 						
-			this.cachedEvent.clearBuf();
+			this.env.clearBuf();
 			
-			this.drawString(this.cachedEvent.buffer);
+			this.drawString(this.env.get('buffer'));
 		},
 		
 		drawCaret: function(){
 		
-			var buffer = this.cachedEvent.buffer;
+			var buffer = this.env.get('buffer');
 			
 			if(this.caretState == true){
-				this.cachedEvent.clearBuf();
+				this.env.clearBuf();
 				this.drawString(buffer);
 				
 				this.caretState = false;
@@ -112,7 +111,6 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool', 'lib/jquery.care
 				
 				buffer.save();
 				
-				buffer.strokeStyle = 'black';
 				buffer.lineWidth = 3;
 				
 				buffer.beginPath();
@@ -129,6 +127,17 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool', 'lib/jquery.care
 		
 		drawString: function(ctx){
 			ctx.fillText(this.string, this.anchor.x, this.anchor.y);		
+		},
+		
+		updateContext: function(ctx){
+			var properties = this.env.get('properties');
+			
+			ctx.fillStyle = properties.get('color');
+			ctx.strokeStyle = properties.get('color');
+			ctx.lineWidth = properties.get('lineWidth');
+			ctx.font = '20pt Arial';
+			ctx.lineCap = 'round';
+			
 		}
 		
 	

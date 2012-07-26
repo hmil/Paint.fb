@@ -13,12 +13,12 @@ define(function(){
 			// Initialisation de l'application ici
 			console.log('app init');
 			
-			//On instancie le modèle facebook
+			//Instanciation des modèles
 			this.models.facebook = new this.Models.Facebook();
+			this.models.drawing = new this.Models.Drawing();
 			
 			//Instanciation des collections
 			this.collections.discussions = new this.Collections.Discussions();
-			this.collections.tools = new this.Collections.Tools();
 			
 			//instanciation des vues : la vue principale instancie les autres
 			this.views.main = new this.Views.main();

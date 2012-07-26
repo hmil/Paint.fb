@@ -14,23 +14,24 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 			this.p1 = {x: e.x, y: e.y};
 		},
 		
-		onMouseup: function(e){	
+		onMouseup: function(e){
+			var canvas = this.env.get('canvas');
 			//initialisation du canvas
-			e.applyStyle();
+			this.updateContext(canvas);
 			
 			//Dessin du trajet
-			this.drawEllipse(e.canvas, this.p1, {x: e.x, y: e.y});
+			this.drawEllipse(canvas, this.p1, {x: e.x, y: e.y});
 			
 			//Et on nettoie le buffer
-			e.clearBuf();
+			this.env.clearBuf();
 		},
 		
 		onMousemove: function(e){			
 			//On nettoie le buffer
-			e.clearBuf();
+			this.env.clearBuf();
 
 			//Et on redessine la ligne
-			this.drawEllipse(e.buffer, this.p1, {x: e.x, y: e.y});
+			this.drawEllipse(this.env.get('buffer'), this.p1, {x: e.x, y: e.y});
 		},
 		
 		drawEllipse: function(ctx, p1, p2){		
@@ -53,6 +54,14 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 			ctx.bezierCurveTo(left+xRay-krx, top+height, left, top+yRay+kry, left, top+yRay);
 			ctx.bezierCurveTo(left, top+yRay-kry, left+xRay-krx, top, left+xRay, top);
 			ctx.stroke();
+		},
+		
+		updateContext: function(ctx){
+			var properties = this.env.get('properties');
+			
+			ctx.strokeStyle = properties.get('color');
+			ctx.lineWidth = properties.get('lineWidth');
+			ctx.lineCap = 'round';
 		}
 	
 	});

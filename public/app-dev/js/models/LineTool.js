@@ -15,22 +15,23 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 		},
 		
 		onMouseup: function(e){	
+			var canvas = this.env.get('canvas');
 			//initialisation du canvas
-			e.applyStyle();
+			this.updateContext(canvas);
 			
 			//Dessin du trajet
-			this.drawLine(e.canvas, this.p1, {x: e.x, y: e.y});
+			this.drawLine(canvas, this.p1, {x: e.x, y: e.y});
 			
 			//Et on nettoie le buffer
-			e.clearBuf();
+			this.env.clearBuf();
 		},
 		
 		onMousemove: function(e){			
 			//On nettoie le buffer
-			e.clearBuf();
+			this.env.clearBuf();
 
 			//Et on redessine la ligne
-			this.drawLine(e.buffer, this.p1, {x: e.x, y: e.y});
+			this.drawLine(this.env.get('buffer'), this.p1, {x: e.x, y: e.y});
 		},
 		
 		drawLine: function(ctx, p1, p2){
@@ -40,6 +41,14 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 			ctx.lineTo(p2.x, p2.y);
 			
 			ctx.stroke();
+		},
+		
+		updateContext: function(ctx){
+			var properties = this.env.get('properties');
+			
+			ctx.strokeStyle = properties.get('color');
+			ctx.lineWidth = properties.get('lineWidth');
+			ctx.lineCap = 'round';
 		}
 	
 	});

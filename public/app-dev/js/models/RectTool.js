@@ -15,26 +15,37 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 		},
 		
 		onMouseup: function(e){	
+			var canvas = this.env.get('canvas');
 			//initialisation du canvas
-			e.applyStyle();
+			this.updateContext(canvas);
 			
 			//Dessin du trajet
-			this.drawRect(e.canvas, this.p1, {x: e.x, y: e.y});
+			this.drawRect(canvas, this.p1, {x: e.x, y: e.y});
 			
 			//Et on nettoie le buffer
-			e.clearBuf();
+			this.env.clearBuf();
 		},
 		
 		onMousemove: function(e){			
 			//On nettoie le buffer
-			e.clearBuf();
+			this.env.clearBuf();
 
 			//Et on redessine la ligne
-			this.drawRect(e.buffer, this.p1, {x: e.x, y: e.y});
+			this.drawRect(this.env.get('buffer'), this.p1, {x: e.x, y: e.y});
 		},
 		
 		drawRect: function(ctx, p1, p2){
 			ctx.strokeRect(p1.x, p1.y, p2.x-p1.x, p2.y - p1.y);
+		},
+		
+		updateContext: function(ctx){
+			var properties = this.env.get('properties');
+			
+			//TODO : propriétés spéciales pour le rect
+			ctx.strokeStyle = properties.get('color');
+			ctx.lineWidth = properties.get('lineWidth');
+			ctx.lineCap = 'square';
+			ctx.lineJoin = 'miter';
 		}
 	
 	});

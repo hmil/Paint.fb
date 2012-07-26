@@ -11,9 +11,8 @@ define([
 		initialize : function(){
 			var _this = this;
 			
-			
-			this.properties = new app.Models.DrawingProperties();
-			
+			//TODO : convertir en variable locale
+			this.properties = app.models.drawing.get('properties');
 			
 			this.properties
 				.on('change:lineWidth', function(model, width){
@@ -27,7 +26,7 @@ define([
 				el: this.$el.find('#colorPalette')
 			})
 			.on('colorChanged', function(col){
-				this.properties.set({strokeStyle: col});
+				this.properties.set({color: col});
 			}, this);
 			
 			
@@ -62,7 +61,7 @@ define([
 		
 		refreshBrushPreview: function(canvasRatio){
 			
-			this.brushPreview.fillStyle = this.properties.get('strokeStyle');
+			this.brushPreview.fillStyle = this.properties.get('color');
 			
 			this.brushPreview.clearRect(0, 0, 100, 100);
 			

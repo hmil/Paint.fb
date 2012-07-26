@@ -3,8 +3,7 @@ define([
 	'lib/backbone', 
 	'lib/underscore', 
 	'lib/jquery-ui',
-	'models/DrawingEvent',
-	'collections/Tools',
+	'models/Drawing',
 	'views/propertyBox'
 ], function(app){
 
@@ -14,59 +13,58 @@ define([
 			//On stocke this dans une variable locale pour s'en servir plus tard
 			var _this = this;
 			
+			//On initialise le modèle de cette vue
+			var model = this.model = app.models.drawing;
+			
 			/* On génère le contenu grâce à la template */
 			this.$el = $(_.template($('#tp_drawingBench').html())());
 			
 			this.canvas = this.$('#canvas');
 			this.buffer = this.$('#buffer')
 				.mousedown(function(evt){
-					_this.tool.onMousedown(_this.makeEvent(evt));
+					model.get('tool').onMousedown(_this.makeEvent(evt));
 					
 					$(window).on('mousemove.tracking', function(e){
 					
-						_this.tool.onMousemove(_this.makeEvent(e));
+						model.get('tool').onMousemove(_this.makeEvent(e));
 					})
 					
 					.on('mouseup.tracking', function(e){
-						_this.tool.onMouseup(_this.makeEvent(e));
+						model.get('tool').onMouseup(_this.makeEvent(e));
 						
 						$(window).off('mouseup.tracking mousemove.tracking');
 					});
 					
 				});
 			
-			this.canvasCtx = false; //On initialise le contexte de canvas à false car on veux utiliser le contexte spécifique à la discussion
-
-			this.bufferCtx = this.buffer.get()[0].getContext('2d');
+			//Le modèle ne contient que les contextes, pas les éléments jquery (logique MVC)
+			model.set('buffer', this.buffer.get()[0].getContext('2d'))
+				.set('canvasHeight', this.canvas.attr('height'))
+				.set('canvasWidth', this.canvas.attr('width'));
+			
+			//Lors d'un changement dans le modèle des propriétés
+			model.get('properties')
+				.on('change', function(){
+					model.get('tool').updateContext(model.get('buffer'));
+					
+					//Et on rafraîchit la preview de la brush
+					this.propertyBox.refreshBrushPreview(this.buffer.attr('width')/this.buffer.width());
+					
+				}, this);
 			
 			/* initialisation de la propertybox */
 			this.propertyBox = new app.Views.PropertyBox({
 				el: this.$('#propertyBox')
 			});
 			
-			//Lors d'un changement dans le modèle des propriétés
-			this.propertyBox.properties
-				.on('change', function(model, c){
-					
-					//On applique ce changement sur le contexte du buffer
-					for(var i in c.changes){
-						this.bufferCtx[i] = model.get(i);
-					}
-					
-					//Et on rafraîchit la preview de la brush
-					this.propertyBox.refreshBrushPreview(this.buffer.attr('width')/this.buffer.width());
-					
-				}, this)
-				
-				//Initialise le contexte grâce au modèle properties
-				.initContext(this.bufferCtx);
+			
 		
 			
 			this.$el.find('.toolButton').click(function(){
 				_this.switchTool($(this).attr('data-tool'));
 			});
 
-			this.tool = app.collections.tools.first();
+			model.get('tool').updateContext(model.get('buffer'));
 				
 			this.toolBox = this.$('#toolBox');
 			
@@ -75,19 +73,7 @@ define([
 			
 			/*	On déclare la variable discuss qui contiens la discussion actuellement affichée 
 				mais on ne l'initialise pas. */
-			this.discuss = false;
-
-			//Objet servant de base aux évènements envoyés aux outils
-			this.eventObj = new app.Models.DrawingEvent({
-				buffer: this.bufferCtx,
-				canvas: this.canvasCtx,
-				dimentions: {
-					w: this.canvas.attr('width'),
-					h: this.canvas.attr('height')
-				},
-				properties: this.propertyBox.properties
-			});
-			
+			this.discuss = false;			
 		},
 		
 		getBench: function(discuss){	
@@ -105,19 +91,19 @@ define([
 				this.$el.find('#canvas').replaceWith(discuss.canvas);
 				this.canvasCtx = discuss.canvas.get()[0].getContext('2d');
 				
-				this.eventObj.canvas = this.canvasCtx;
+				this.model.set('canvas', this.canvasCtx);
 			}
 			return this.$el;
 		},
 		
 		switchTool: function(toolName){
-			var tool = app.collections.tools.get(toolName);
+			var tool = this.model.get('tools').get(toolName);
 			
 			if(!tool)
 				console.log('outil inexistant ('+toolName+')');
 			else{
 				console.log("choix de l'outil : "+toolName);
-				this.tool = tool;
+				this.model.set('tool', tool);
 				
 				this.toolBox.children().removeClass('active');
 				this.toolBox.find('[data-tool="'+toolName+'"]').addClass('active');
@@ -161,11 +147,11 @@ define([
 			this.propertyBox.refreshBrushPreview(this.buffer.attr('width')/this.buffer.width());
 		},
 
-		makeEvent: function(evt){
-			this.eventObj.x = Math.round((evt.pageX - this.buffer.offset().left)*this.buffer.attr('width')/this.buffer.width());
-			this.eventObj.y = Math.round((evt.pageY - this.buffer.offset().top)*this.buffer.attr('height')/this.buffer.height());
-			
-			return this.eventObj;
+		makeEvent: function(evt){	
+			return {
+				x: Math.round((evt.pageX - this.buffer.offset().left)*this.buffer.attr('width')/this.buffer.width()),
+				y: Math.round((evt.pageY - this.buffer.offset().top)*this.buffer.attr('height')/this.buffer.height())
+			};
 		}
 	});
 });

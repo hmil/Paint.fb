@@ -11,24 +11,28 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 		},
 		
 		onMousedown: function(e){
-			e.buffer.beginPath();
-			e.buffer.moveTo(e.x, e.y);
+			var buffer = this.env.get('buffer');
+			
+			buffer.beginPath();
+			buffer.moveTo(e.x, e.y);
 			
 			this.path.push({x: e.x, y: e.y});
 		},
 		
 		onMouseup: function(e){	
+			var canvas = this.env.get('canvas');
+			
 			//initialisation du canvas
-			e.applyStyle();
+			this.updateContext(canvas);
 			
 			//Dessin du trajet
-			this.drawPath(e.canvas, this.path);
+			this.drawPath(canvas, this.path);
 			
 			//on réinitialise le tableau mémoire
 			this.path.length = 0;
 			
-			//Et on nettoie le buffer
-			e.clearBuf();
+			//Et on nettoie lthis.env.buffer
+			this.env.clearBuf();
 		},
 		
 		onMousemove: function(e){
@@ -36,10 +40,10 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 			this.path.push({x: e.x, y: e.y});
 			
 			//On nettoie le buffer
-			e.clearBuf();
+			this.env.clearBuf();
 
 			//Et on redessine le chemin
-			this.drawPath(e.buffer, this.path);
+			this.drawPath(this.env.get('buffer'), this.path);
 		},
 		
 		drawPath: function(ctx, path){
@@ -50,6 +54,15 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 			}
 			
 			ctx.stroke();
+		},
+		
+		updateContext: function(ctx){
+			var properties = this.env.get('properties');
+			
+			ctx.strokeStyle = properties.get('color');
+			ctx.lineWidth = properties.get('lineWidth');
+			ctx.lineCap = 'round';
+			ctx.lineJoin = 'round';
 		}
 	
 	});
