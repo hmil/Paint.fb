@@ -45,14 +45,46 @@ script#tp_drawingBench(type='text/template')
 						td
 							.colorButton 
 			
-			.propertyItem
-				div.clearfix
-					span.pull-left Taille :
-					input#brushSizeInput.pull-left
-				#brushSizeSlider
+			.propertyItem#brushSize
+				.pull-left
+					.clearfix
+						span.pull-left Taille :
+						input#brushSizeInput.sizeInput.pull-left
+					#brushSizeSlider
 				
-			canvas#brushPreview.propertyItem(width='100', height='100')
+				canvas#brushPreview(width='100', height='100')
 				
+			.propertyItem#fontSize
+				.pull-left
+					.clearfix
+						span.pull-left Taille :
+						.input-append.pull-left
+							input#fontSizeInput.sizeInput
+							span.add-on pt
+					#fontSizeSlider
+			
+			.propertyItem#fontAttributes
+				select#fontFamily
+					option(value='Arial', selected='selected') Arial
+					option(value='Bookman') Bookman
+					option(value='Courier New ') Courier New 
+					option(value='Garamond') Garamond
+					option(value='Palatino') Palatino
+					option(value='Times New Roman') Times New Roman				
+					option(value='Avant Garde ') Avant Garde 
+				div
+					label.checkbox.inline
+						input#inlineCheckbox1(type="checkbox", value="option1") 
+						| Italic
+					label.checkbox.inline
+						input#inlineCheckbox2(type="checkbox", value="option2") 
+						| Bold
+					label.checkbox.inline
+						input#inlineCheckbox3(type="checkbox", value="option3") 
+						| Underline
+						
+				
+			
 		#drawingArea
 			canvas.drawing_canvas#canvas(width='#{canvas.width}', height='#{canvas.height}')
 			canvas.drawing_canvas#buffer(width='#{canvas.width}', height='#{canvas.height}')

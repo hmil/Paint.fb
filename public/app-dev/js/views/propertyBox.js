@@ -20,8 +20,18 @@ define([
 					this.brushSizeSlider.slider('value', width);
 				}, this);
 			
-			/* Initialisation de la palette de couleurs */
 			
+			//On référence les différentes boites à propriétés
+			this.items = this.$('.propertyItem');
+			
+			//Lorsque l'on change d'outil, il faudra afficher ou masquer certaines propriétés
+			app.models.drawing.on('change:tool', function(model, tool){
+				_this.updateLayout(tool);
+			});
+			//Et on rafraîchit au démarrage
+			this.updateLayout(app.models.drawing.get('tool'));
+			
+			/* Initialisation de la palette de couleurs */
 			this.palette = new app.Views.ColorPalette({
 				el: this.$el.find('#colorPalette')
 			})
@@ -57,6 +67,21 @@ define([
 			/* Initialisation de la preview de brosse */
 			
 			this.brushPreview = this.$('#brushPreview').get()[0].getContext('2d');
+			
+			
+			/* Initialisation du select de polices */
+			
+			this.fontFamily = this.$('#fontFamily').on('change', function(){
+				_this.properties.set('fontFamily', $(this).val());
+			});
+			
+			this.fontSize = this.$('#fontSizeInput').on('change', function(){
+				_this.properties.set({fontSize: $(this).val()}, {
+					error: function(){
+						_this.fontSize.val(_this.properties.get('fontSize'));
+					}
+				});
+			}).val(this.properties.get('fontSize'));;
 		},
 		
 		refreshBrushPreview: function(canvasRatio){
@@ -69,6 +94,19 @@ define([
 			this.brushPreview.arc(50, 50, (this.properties.get('lineWidth'))/canvasRatio, Math.PI*2, 0, true);
 			
 			this.brushPreview.fill();
+		},
+		
+		updateLayout : function(tool){
+			var filter = '#colorPalette, #brushSize';
+				
+			switch(tool.get('id')){
+				case 'text':
+					filter = '#colorPalette, #fontSize, #fontAttributes';
+					break;
+			}
+			
+			this.items.filter(filter).show();
+			this.items.filter(':not('+filter+')').hide();
 		}
 		
 		

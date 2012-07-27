@@ -73,8 +73,8 @@ html, body, #content, #main_frame {
 	float: left;
 }
 
-#brushSizeInput {
-	width: 20px;
+.sizeInput {
+	width: 25px;
 	margin-left: 10px;
 }
 
@@ -82,6 +82,7 @@ html, body, #content, #main_frame {
 	width: 55px;
 	height: 55px;
 	background-color: white;
+	margin-left: 10px
 }
 
 #toolBox {
