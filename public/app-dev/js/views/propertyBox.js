@@ -18,6 +18,10 @@ define([
 				.on('change:lineWidth', function(model, width){
 					this.brushSizeInput.val(width);
 					this.brushSizeSlider.slider('value', width);
+				}, this)
+				.on('change:fontSize', function(model, size){
+					this.fontSizeInput.val(size);
+					this.fontSizeSlider.slider('value', size);
 				}, this);
 			
 			
@@ -73,15 +77,39 @@ define([
 			
 			this.fontFamily = this.$('#fontFamily').on('change', function(){
 				_this.properties.set('fontFamily', $(this).val());
+				$(this).css('font-family', $(this).val());
 			});
 			
-			this.fontSize = this.$('#fontSizeInput').on('change', function(){
+			
+			/* contrôle de taille de police */
+			
+			this.fontSizeInput = this.$('#fontSizeInput').on('change', function(){
 				_this.properties.set({fontSize: $(this).val()}, {
 					error: function(){
-						_this.fontSize.val(_this.properties.get('fontSize'));
+						_this.fontSizeInput.val(_this.properties.get('fontSize'));
 					}
 				});
-			}).val(this.properties.get('fontSize'));;
+			}).val(this.properties.get('fontSize'));
+			
+			this.fontSizeSlider = this.$('#fontSizeSlider').slider({
+				min: this.properties.get('minFontSize'),
+				max: this.properties.get('maxFontSize'),
+				value: this.properties.get('fontSize'),
+				slide: function(event, ui){	
+					_this.properties.set({fontSize: ui.value}, {
+						error: function(){
+							_this.fontSizeSlider.val(_this.properties.get('fontSize'));
+						}
+					}); 
+				}
+			});
+			
+			
+			/* Attributs de police */
+			
+			this.$('.fontAttribute').change(function(e){
+				_this.properties.set($(this).val(), $(this).is(':checked'));
+			});
 		},
 		
 		refreshBrushPreview: function(canvasRatio){

@@ -135,7 +135,11 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool', 'lib/jquery.care
 			ctx.fillStyle = properties.get('color');
 			ctx.strokeStyle = properties.get('color');
 			ctx.lineWidth = properties.get('lineWidth');
-			ctx.font = properties.get('fontSize')+'pt '+properties.get('fontFamily');
+			
+			var attributes 	= 	((properties.get('italic') == true) ? 'italic ' : '')
+							+	((properties.get('bold') == true) ? 'bold ' : '')
+								
+			ctx.font = attributes+properties.get('fontSize')+'pt '+properties.get('fontFamily');
 			ctx.lineCap = 'round';
 			
 		}

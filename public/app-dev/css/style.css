@@ -193,3 +193,45 @@ html, body, #content, #main_frame {
 #canvas {
 	background-color: white;
 }
+
+
+
+.font-arial {
+	font-family: Arial;
+}
+
+.font-arialblack {
+	font-family: Arial Black;
+}
+
+.font-comic {
+	font-family: Comic Sans MS;
+}
+
+.font-courier_new {
+	font-family: Courier New;
+}
+
+.font-veranda {
+	font-family: Veranda;
+}
+
+.font-georgia {
+	font-family: Georgia;
+}
+
+.font-times {
+	font-family: Times New Roman;
+}
+.font-impact {
+	font-family: Impact;
+}
+
+.font-trebuchet {
+	font-family: Trebuchet MS
+}
+
+.font-webdings {
+	font-family: Webdings
+}
+

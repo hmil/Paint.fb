@@ -10,11 +10,8 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			fontSize: 20,
 			maxFontSize: 200,
 			minFontSize: 1,
-			fontAttributes: {
-				italic: false,
-				bold: false,
-				underline: false
-			}
+			italic: false,
+			bold: false
 		},
 		
 		initialize: function(){
