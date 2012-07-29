@@ -17,10 +17,6 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/DrawingProperties', 'co
 			this.get('tools').each(function(tool){
 				tool.env = this;
 			}, this);
-			
-			this.on('change:tool', function(model, tool){
-				tool.updateContext(model.get('buffer'));
-			});
 		},
 		
 		clearBuf: function(){

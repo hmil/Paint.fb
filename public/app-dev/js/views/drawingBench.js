@@ -40,17 +40,20 @@ define([
 			//Le modèle ne contient que les contextes, pas les éléments jquery (logique MVC)
 			model.set('buffer', this.buffer.get()[0].getContext('2d'))
 				.set('canvasHeight', this.canvas.attr('height'))
-				.set('canvasWidth', this.canvas.attr('width'));
-			
-			//Lors d'un changement dans le modèle des propriétés
-			model.get('properties')
-				.on('change', function(){
-					model.get('tool').updateContext(model.get('buffer'));
-					
-					//Et on rafraîchit la preview de la brush
-					this.propertyBox.refreshBrushPreview(this.buffer.attr('width')/this.buffer.width());
-					
-				}, this);
+				.set('canvasWidth', this.canvas.attr('width'))
+				
+				.on('change:tool', function(model, tool){
+					_this.switchTool(tool);
+				})
+				//Lors d'un changement dans le modèle des propriétés
+				.get('properties')
+					.on('change', function(){
+						model.get('tool').updateContext(model.get('buffer'));
+						
+						//Et on rafraîchit la preview de la brush
+						this.propertyBox.refreshBrushPreview(this.buffer.attr('width')/this.buffer.width());
+						
+					}, this);
 			
 			/* initialisation de la propertybox */
 			this.propertyBox = new app.Views.PropertyBox({
@@ -61,7 +64,7 @@ define([
 		
 			
 			this.$el.find('.toolButton').click(function(){
-				_this.switchTool($(this).attr('data-tool'));
+				model.set('tool', model.get('tools').get($(this).attr('data-tool')));
 			});
 
 			model.get('tool').updateContext(model.get('buffer'));
@@ -96,18 +99,11 @@ define([
 			return this.$el;
 		},
 		
-		switchTool: function(toolName){
-			var tool = this.model.get('tools').get(toolName);
+		switchTool: function(tool){
+			this.toolBox.children().removeClass('active');
+			this.toolBox.find('[data-tool="'+tool.get('id')+'"]').addClass('active');
 			
-			if(!tool)
-				console.log('outil inexistant ('+toolName+')');
-			else{
-				console.log("choix de l'outil : "+toolName);
-				this.model.set('tool', tool);
-				
-				this.toolBox.children().removeClass('active');
-				this.toolBox.find('[data-tool="'+toolName+'"]').addClass('active');
-			}
+			tool.updateContext(this.model.get('buffer'));
 		},
 		
 		adjustSize: function(){
