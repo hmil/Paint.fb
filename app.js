@@ -35,6 +35,19 @@ app.get('/app-dev', routes.app);
 app.get('/app', routes.app);
 app.post('/app', routes.app);
 
+//ROUTE TEMPORAIRE POUR LES TESTS COTE CLIENT
+app.post('/store/discuss', (function(){
+		var counter = 0;
+		
+		return function(req, res, next){
+			if(req.body.id)
+				res.send('{"id": "'+req.body.id+'"}');
+			else
+				res.send('{"id": "'+ (counter++) +'"}');
+		};
+	})()
+);
+
 //Route spéciale pour mettre en cache le fichier channel
 app.get('/channel.html', routes.channel);
 

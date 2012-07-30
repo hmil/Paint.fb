@@ -6,8 +6,9 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		initialize : function(){
 			this.tp_friendInfo = _.template($('#tp_friendInfo').html());
 			
-			app.collections.discussions	.on('started', this.switchDiscussion, this)
-										.on('selected', this.switchDiscussion, this);
+			app.collections.discussions	.on('add', this.switchDiscussion, this)
+										.on('selected', this.switchDiscussion, this)
+										.on('remove', this.removeDiscussion, this);
 		},
 		
 		showFriendInfo : function(friend){
@@ -41,10 +42,22 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			app.views.drawingBench.adjustSize();
 		},
 		
+		removeDiscussion: function(foo, bar, options){
+			if(options.model == app.views.drawingBench.discuss){
+				var next = app.collections.discussions.first();
+				if(next)
+					app.collections.discussions.startWithId(next.get('id'));
+				else
+					this.$el.children().detach();
+			}
+		},
+		
 		resize: function(size){
 			this.$el.width(size);
 			
 			this.trigger('resized', size);
 		}
+		
+		
 	});
 });

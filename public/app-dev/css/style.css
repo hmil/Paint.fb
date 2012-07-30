@@ -235,3 +235,13 @@ html, body, #content, #main_frame {
 	font-family: Webdings
 }
 
+.conferenceLabel_close {
+	margin-top: 6px;
+	float: right;
+	cursor: pointer;
+}
+
+.conferenceLabel {
+	cursor: default;
+}
+

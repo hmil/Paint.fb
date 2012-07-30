@@ -4,6 +4,8 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Discussion'], function(
 		
 		model: app.Models.Discussion,
 		
+		url: "/store/collection/",
+		
 		getByFriendId : function(fid){
 			return _.find(this.models, function(model){
 				var mbrs = model.get('members');
@@ -19,6 +21,20 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Discussion'], function(
 			}
 			
 			discuss = this.create({members: [friend, app.models.facebook.get('me')]});
+			this.trigger('started', discuss);
+				
+			return discuss;
+		},
+		
+		startWithId: function(id){
+			var discuss = this.get(id);
+			
+			if(discuss){
+				this.trigger('selected', discuss);
+				return discuss;
+			}
+			
+			discuss = this.create({id: id}, {wait: true});
 			this.trigger('started', discuss);
 				
 			return discuss;

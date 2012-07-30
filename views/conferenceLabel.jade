@@ -1,3 +1,5 @@
 script#tp_conferenceLabel(type='text/template')
-	li
+	li(data-id!= '<%= id %>')
+		i.icon-remove.conferenceLabel_close
 		a.conferenceLabel(href="#")	<%= name %>
+		

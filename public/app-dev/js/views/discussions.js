@@ -8,8 +8,9 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			this.label = _.template($('#tp_conferenceLabel').html());
 			this.list = this.$('#discussionsList');
 			
-			app.collections.discussions.on('started', this.startDiscussion, this)
-										.on('selected', this.selectDiscussion, this);
+			app.collections.discussions.on('add', this.startDiscussion, this)
+										.on('selected', this.selectDiscussion, this)
+										.on('remove', this.removeDiscussion, this);
 		},
 		
 		startDiscussion: function(discuss){
@@ -29,13 +30,27 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			//Join transforme l'array en une chaine
 			.join(', ');			
 			
-			var content = $(this.label({name: name}))
+			var content = $(this.label({name: name, id: discuss.cid}))
 			.click(function(){
 				_this.selectLabel($(this));
 				//On demande à la contentArea d'afficher la discussion courante
 				//On profite de la closure pour utiliser discuss
 				app.views.contentArea.switchDiscussion(discuss);
+			})
+			.mouseenter(function(){
+				$(this).children('.conferenceLabel_close').show();
+			})
+			.mouseleave(function(){
+				if(!$(this).hasClass('active'))
+					$(this).children('.conferenceLabel_close').hide();
 			});
+			
+			//Comportement du bouton de fermeture
+			content.children('.conferenceLabel_close')
+				.click(function(e){
+					e.stopPropagation();
+					discuss.destroy({model: discuss});					
+				});
 			
 			//On ajoute le label à la liste
 			this.list.append(content);
@@ -54,8 +69,12 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		},
 		
 		selectLabel: function(label){
-			label.parent().children('li').removeClass('active');
-			label.addClass('active');
+			label.parent().children('li').removeClass('active').children('.conferenceLabel_close').hide();
+			label.addClass('active').children('.conferenceLabel_close').show();
+		},
+		
+		removeDiscussion: function(foo, bar, options){
+			this.$('[data-id="'+options.model.cid+'"]').remove();
 		}
 		
 	});
