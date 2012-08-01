@@ -13,6 +13,9 @@ define(function(){
 			// Initialisation de l'application ici
 			console.log('app init');
 			
+			//Démarrage de la connection par socket.io
+			this.socket = io.connect(window.location.protocol+'//'+window.location.host);
+			
 			//Instanciation des modèles
 			this.models.facebook = new this.Models.Facebook();
 			this.models.drawing = new this.Models.Drawing();

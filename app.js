@@ -8,6 +8,23 @@ var express = require('express')
 
 var app = module.exports = express.createServer();
 
+//Mise en place du serveur socket.io
+var io = require('socket.io').listen(app);
+
+//Configuration de sockets.io
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
+
+io.sockets.on('connection', function (socket) {
+  socket.emit('test', { hello: 'world' });
+  socket.on('ping', function (data) {
+    socket.emit('pong', {data: data});
+  });
+});
+
+
 // Configuration
 
 app.configure(function(){

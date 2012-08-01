@@ -9,7 +9,8 @@ require([
 	"models/Drawing",
 	"collections/Discussions",
 	"collections/Tools",
-	"views/main"],
+	"views/main",
+	"../socket.io/socket.io.js"],
 	function($) {
 		//Toutes les dépendences ont été chargées
 		$(function() {
