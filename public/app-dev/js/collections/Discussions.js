@@ -6,6 +6,19 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Discussion'], function(
 		
 		url: "/store/collection/",
 		
+		initialize: function(){
+			var _this = this;
+			
+			app.socket.on('pushAct', function(data){
+				var model = _this.get(data.mod);
+				
+				if(model)
+					model.pushAction(data.act);
+				
+			}, this);
+		
+		},
+		
 		getByFriendId : function(fid){
 			return _.find(this.models, function(model){
 				var mbrs = model.get('members');

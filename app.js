@@ -8,8 +8,9 @@ var express = require('express')
 
 var app = module.exports = express.createServer();
 
-//Mise en place du serveur socket.io
 var io = require('socket.io').listen(app);
+
+// Configuration
 
 //Configuration de sockets.io
 io.configure(function () { 
@@ -17,15 +18,7 @@ io.configure(function () {
   io.set("polling duration", 10); 
 });
 
-io.sockets.on('connection', function (socket) {
-  socket.emit('test', { hello: 'world' });
-  socket.on('ping', function (data) {
-    socket.emit('pong', {data: data});
-  });
-});
-
-
-// Configuration
+//Configuration du webserver
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
@@ -70,4 +63,17 @@ app.get('/channel.html', routes.channel);
 
 app.listen(process.env.PORT || 3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+});
+
+
+io.sockets.on('connection', function (socket) {
+	socket.on('newAct', (function () {
+		var counter = 0;
+		
+		return function(data){
+			data.act.id = counter++;
+			
+			socket.emit('pushAct', {mod: data.mod, act: data.act});
+		}
+	})());
 });
