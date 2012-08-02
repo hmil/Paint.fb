@@ -33,7 +33,7 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Discussion'], function(
 				return discuss;
 			}
 			
-			discuss = this.create({members: [friend, app.models.facebook.get('me')]});
+			discuss = this.create({members: [friend.uid, app.models.facebook.get('me').uid]});
 			this.trigger('started', discuss);
 				
 			return discuss;

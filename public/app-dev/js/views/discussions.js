@@ -23,9 +23,12 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 				//Grâce à map, on crée un array contenant uniquement les noms
 				//Et on filtre le nom de l'utilisateur courant.
 				_.map(discuss.get('members'),
-					function(val){
-						if(val.name != app.models.facebook.get('me').name)
-					return val.name;
+					function(id){
+						var friend = app.models.facebook.getFriend(id);
+						if(typeof(friend) != 'undefined'){
+							if(friend.name != app.models.facebook.get('me').name)
+								return friend.name;
+						}
 				}))
 			//Join transforme l'array en une chaine
 			.join(', ');			

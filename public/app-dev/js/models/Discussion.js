@@ -28,7 +28,7 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		},
 		
 		/*
-			Cette méthode est appellée par la collection qui écoute le serveur et reçoit les actions (crées localement comme à distance sans distinction)
+			Cette méthode est appellée par la collection qui écoute le serveur et reçoit les actions (créées localement comme à distance sans distinction)
 		*/
 		pushAction: function(action){
 			if(typeof(action.id) == 'undefined')
