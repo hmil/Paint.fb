@@ -43,7 +43,7 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		},
 		
 		removeDiscussion: function(foo, bar, options){
-			if(options.model == app.views.drawingBench.discuss){
+			if(options.model == app.models.drawing.discuss){
 				var next = app.collections.discussions.first();
 				if(next)
 					app.collections.discussions.startWithId(next.get('id'));

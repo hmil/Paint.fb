@@ -1,5 +1,7 @@
 define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool', 'lib/jquery.caret'], function(app){
 	
+	var requiredProps = ['color', 'lineWidth', 'italic', 'bold', 'fontSize', 'fontFamily'];
+	
 	app.Models.TextTool = app.Models.Tool.extend({
 		
 		defaults: {
@@ -76,16 +78,17 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool', 'lib/jquery.care
 		stopEditing: function(){
 			this.editing = false;
 			
-			var canvas = this.env.get('canvas');
-			
 			window.clearInterval(this.caretInterval);
 			
 			this.input.val('');
-			
-			this.env.clearBuf();
-			
-			this.updateContext(canvas);
-			this.drawString(canvas);
+				
+			this.sendAction({
+				str: this.string,
+				p: this.anchor,
+				
+				//Propriétés nécessaires pour cet outil
+				properties: requiredProps
+			});
 		},
 		
 		refresh: function(){
@@ -93,7 +96,7 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool', 'lib/jquery.care
 						
 			this.env.clearBuf();
 			
-			this.drawString(this.env.get('buffer'));
+			this.drawString(this.env.get('buffer'), this.string, this.anchor);
 		},
 		
 		drawCaret: function(){
@@ -102,7 +105,7 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool', 'lib/jquery.care
 			
 			if(this.caretState == true){
 				this.env.clearBuf();
-				this.drawString(buffer);
+				this.drawString(buffer, this.string, this.anchor);
 				
 				this.caretState = false;
 			}
@@ -125,21 +128,29 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool', 'lib/jquery.care
 			}
 		},
 		
-		drawString: function(ctx){
-			ctx.fillText(this.string, this.anchor.x, this.anchor.y);		
+		drawString: function(ctx, string, anchor){
+			ctx.fillText(string, anchor.x, anchor.y);		
 		},
 		
-		updateContext: function(ctx){
-			var properties = this.env.get('properties');
+		drawAction: function(act, ctx){
+			this.updateContext(ctx, act.properties);
+			this.drawString(ctx, act.str, act.p);
 			
-			ctx.fillStyle = properties.get('color');
-			ctx.strokeStyle = properties.get('color');
-			ctx.lineWidth = properties.get('lineWidth');
+			if(this.editing == false)
+				this.env.clearBuf();
+		},
+		
+		updateContext: function(ctx, properties){
+			properties = this.getCleanedProperties(requiredProps, properties);
 			
-			var attributes 	= 	((properties.get('italic') == true) ? 'italic ' : '')
-							+	((properties.get('bold') == true) ? 'bold ' : '')
+			ctx.fillStyle = properties.color;
+			ctx.strokeStyle = properties.color;
+			ctx.lineWidth = properties.lineWidth;
+			
+			var attributes 	= 	((properties.italic == true) ? 'italic ' : '')
+							+	((properties.bold == true) ? 'bold ' : '')
 								
-			ctx.font = attributes+properties.get('fontSize')+'pt '+properties.get('fontFamily');
+			ctx.font = attributes+properties.fontSize+'pt '+properties.fontFamily;
 			ctx.lineCap = 'round';
 			
 		}

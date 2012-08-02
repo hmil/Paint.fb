@@ -30,8 +30,15 @@ module.exports = exports = function(mongoose){
 					});
 				}
 				else{
-					console.log('sending existng discuss');
-					res.send(JSON.stringify(results[0]));
+					
+					
+					//On crée une variable temporaire
+					var discuss = results[0];
+					
+					console.log('sending existng discuss with id : '+discuss.id);
+					
+					res.send('{"id": "'+discuss._id+'",'
+							+ '"actions": '+JSON.stringify(discuss.actions)+'}');
 				}
 			});
 		},

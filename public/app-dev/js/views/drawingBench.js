@@ -72,16 +72,11 @@ define([
 			this.toolBox = this.$('#toolBox');
 			
 			app.views.contentArea.on('resized', this.adjustSize, this);
-			
-			
-			/*	On déclare la variable discuss qui contiens la discussion actuellement affichée 
-				mais on ne l'initialise pas. */
-			this.discuss = false;			
 		},
 		
 		getBench: function(discuss){	
-			if(discuss.cid != this.discuss.cid){
-				this.discuss = discuss;
+			if(discuss.cid != this.model.discuss.cid){
+				this.model.discuss = discuss;
 				
 				if(!discuss.canvas){
 					discuss.canvas = this.canvas.clone();
@@ -136,8 +131,8 @@ define([
 			this.buffer.width(nw).height(nh);
 			
 			//On resize aussi le canvas de la discussion en cours
-			if(this.discuss)	
-				this.discuss.canvas.width(nw).height(nh);
+			if(this.model.discuss)	
+				this.model.discuss.canvas.width(nw).height(nh);
 				
 			//On rafraichit la preview lorsque la taille du canvas change
 			this.propertyBox.refreshBrushPreview(this.buffer.attr('width')/this.buffer.width());

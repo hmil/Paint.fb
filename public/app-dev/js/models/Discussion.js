@@ -29,7 +29,7 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			action en même temps, elles soient tout de même classées dans le même ordre chez les deux clients. 
 		*/
 		createAction: function(action){
-			app.socket.emit('newAct', {mod: this.get('id'), act: action});
+			app.socket.emit('newAct', {mod: this.id, act: action});
 		},
 		
 		/*
@@ -45,11 +45,14 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		},
 		
 		readActions: function(){
+			//tant qu'il y a des actions à executer
 			while(this.get('actions')[this.actionCur]){
 				
-				//TODO : restituer l'action
-				console.log(this.get('actions')[this.actionCur]);
+				//On execute l'action avec l'outil approprié
+				var action = this.get('actions')[this.actionCur];
+				app.models.drawing.get('tools').get(action.tool).drawAction(action, this.canvas.get()[0].getContext('2d'));
 				
+				//Et on passe à la suivante.
 				this.actionCur++;
 			}
 		}

@@ -17,10 +17,16 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/DrawingProperties', 'co
 			this.get('tools').each(function(tool){
 				tool.env = this;
 			}, this);
+			
+			this.discuss = false;
 		},
 		
 		clearBuf: function(){
 			this.get('buffer').clearRect(0,0, this.get('canvasWidth'), this.get('canvasHeight'));
+		},
+		
+		sendAction: function(action){
+			this.discuss.createAction(action);
 		}
 	
 	});

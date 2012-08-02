@@ -13,17 +13,24 @@ module.exports = function(app, mongoose){
 		io.set('log level', 1);  
 	});
 	
-	//Comportement de socket.io
-	io.sockets.on('connection', function (socket) {
-		socket.on('newAct', (function () {
-			var counter = 0;
-			
+	var publishAction = (function () {
+		var counter = 0;
+		
+		return function(socket){
 			return function(data){
 				data.act.id = counter++;
+				console.log("action incomming, sending action with id : "+data.act.id);
 				
+				//Pour les tests on envoie l'action à tout le monde
 				socket.emit('pushAct', {mod: data.mod, act: data.act});
+				socket.broadcast.emit('pushAct', {mod: data.mod, act: data.act});
 			}
-		})());
+		};
+	})();
+	
+	//Comportement de socket.io
+	io.sockets.on('connection', function (socket) {
+		socket.on('newAct', publishAction(socket));
 	});	
 	
 	

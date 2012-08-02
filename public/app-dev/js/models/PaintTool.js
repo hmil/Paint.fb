@@ -17,22 +17,19 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 			buffer.moveTo(e.x, e.y);
 			
 			this.path.push({x: e.x, y: e.y});
+			this.path.push({x: e.x+1, y: e.y});
 		},
 		
 		onMouseup: function(e){	
-			var canvas = this.env.get('canvas');
-			
-			//initialisation du canvas
-			this.updateContext(canvas);
-			
-			//Dessin du trajet
-			this.drawPath(canvas, this.path);
+			//On envoie une action de dessin au serveur
+			this.sendAction({
+				path: this.path,
+				//Propriétés nécessaires pour cet outil
+				properties: ['color', 'lineWidth']
+			});
 			
 			//on réinitialise le tableau mémoire
 			this.path.length = 0;
-			
-			//Et on nettoie lthis.env.buffer
-			this.env.clearBuf();
 		},
 		
 		onMousemove: function(e){
@@ -49,18 +46,33 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 		drawPath: function(ctx, path){
 			ctx.beginPath();
 			
-			for(var i = 0 ; i < this.path.length ; i++){
-				ctx.lineTo(this.path[i].x, this.path[i].y);
+			for(var i = 0 ; i < path.length ; i++){
+				ctx.lineTo(path[i].x, path[i].y);
 			}
 			
 			ctx.stroke();
 		},
 		
-		updateContext: function(ctx){
-			var properties = this.env.get('properties');
+		drawAction: function(act, ctx){
+			if(typeof(act.path) != 'undefined'){
+				this.updateContext(ctx, act.properties);
+				this.drawPath(ctx, act.path);	
+				
+				//Si on n'est pas entrain de dessiner la suite
+				if(this.path.length == 0){
+					//On nettoie le buffer
+					this.env.clearBuf();
+				}
+			}
+		},
+		
+		updateContext: function(ctx, properties){
+		
+			//S'assure que les "properties" requises soient fournies et les remplace par celles de l'environnement au besoin
+			properties = this.getCleanedProperties(['color', 'lineWidth'], properties);
 			
-			ctx.strokeStyle = properties.get('color');
-			ctx.lineWidth = properties.get('lineWidth');
+			ctx.strokeStyle = properties.color;
+			ctx.lineWidth = properties.lineWidth;
 			ctx.lineCap = 'round';
 			ctx.lineJoin = 'round';
 		}

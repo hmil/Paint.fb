@@ -15,15 +15,13 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 		},
 		
 		onMouseup: function(e){	
-			var canvas = this.env.get('canvas');
-			//initialisation du canvas
-			this.updateContext(canvas);
-			
-			//Dessin du trajet
-			this.drawRect(canvas, this.p1, {x: e.x, y: e.y});
-			
-			//Et on nettoie le buffer
-			this.env.clearBuf();
+			this.sendAction({
+				p1: this.p1,
+				p2: {x: e.x, y: e.y},
+				
+				//Propriétés nécessaires pour cet outil
+				properties: ['color', 'lineWidth']
+			});
 		},
 		
 		onMousemove: function(e){			
@@ -38,16 +36,22 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 			ctx.strokeRect(p1.x, p1.y, p2.x-p1.x, p2.y - p1.y);
 		},
 		
-		updateContext: function(ctx){
-			var properties = this.env.get('properties');
+		drawAction: function(act, ctx){
+			this.updateContext(ctx, act.properties);
+			this.drawRect(ctx, act.p1, act.p2);
 			
-			//TODO : propriétés spéciales pour le rect
-			ctx.strokeStyle = properties.get('color');
-			ctx.lineWidth = properties.get('lineWidth');
+			//Et on nettoie le buffer
+			this.env.clearBuf();
+		},
+		
+		updateContext: function(ctx, properties){
+			properties = this.getCleanedProperties(['color', 'lineWidth'], properties);
+			
+			ctx.strokeStyle = properties.color;
+			ctx.lineWidth = properties.lineWidth;
 			ctx.lineCap = 'square';
 			ctx.lineJoin = 'miter';
 		}
-	
 	});
 
 });
