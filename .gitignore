@@ -3,3 +3,5 @@ node_modules/*
 upload.bat
 
 Thumbs.db
+
+debug.js

@@ -6,16 +6,21 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			members: new Array(),
 			
 			//Stocke les actions de dessin dans l'ordre chronologique
-			actions: new Array(),
-			
-			canvas: false
+			actions: new Array()
 		},
 		
 		initialize: function(){
-			this.url = "/store/discuss/";
+			this.url = "/store/model/discussion";
 			
 			
 			this.actionCur = 0;
+			this.get('members').sort(function(a,b){return a-b});
+		},
+		
+		addMember: function(member){
+			var members = this.get('members');
+			members.push(member);
+			members.sort(function(a,b){return a-b});
 		},
 		
 		/*
@@ -48,7 +53,6 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 				this.actionCur++;
 			}
 		}
-		
 	
 	});
 

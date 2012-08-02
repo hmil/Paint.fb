@@ -32,8 +32,10 @@ define(function(){
 				this.$('#loading_frame').hide();
 			
 				//Selon le statut, on montre l'écran principal ou l'écran de login
-				if(status === 'connected')
+				if(status === 'connected'){
 					app.views.main.showMainFrame();
+					app.collections.discussions.fetch();
+				}
 				else
 					app.views.main.showLoginFrame();
 			});
