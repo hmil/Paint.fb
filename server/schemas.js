@@ -4,7 +4,7 @@ module.exports = function(mongoose){
 
 	return {
 		Discussion: new mongoose.Schema({
-			members: String,
+			members: [],
 			actions: []
 		})
 	};

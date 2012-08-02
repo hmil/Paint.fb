@@ -21,7 +21,7 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Discussion'], function(
 		getByFriendId : function(fid){
 			return _.find(this.models, function(model){
 				var mbrs = model.get('members');
-				return ( _.indexOf(_.pluck(mbrs, 'uid'), fid) != -1 && mbrs.length == 2); //Si l'ami est présent et est seul
+				return ( _.indexOf(mbrs, fid) != -1 && mbrs.length == 2); //Si l'ami est présent et est seul
 			});
 		},
 		

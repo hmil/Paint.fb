@@ -9,7 +9,7 @@ module.exports = exports = function(mongoose){
 		getDiscussion: function(req, res){	
 			
 			//On récupère les membres impliqués dans la discussion
-			var members = req.body.members.toString();
+			var members = req.body.members;
 			
 			//Et on cherche une discussion avec les mêmes membres
 			models.Discussion.find({'members': members }, function (err, results) {
