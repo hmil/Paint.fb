@@ -13,7 +13,7 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Discussion'], function(
 				var model = _this.get(data.mod);
 				
 				if(model)
-					model.pushAction(data.act);
+					model.pushAction(data);
 				
 			}, this);
 		},

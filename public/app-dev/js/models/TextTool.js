@@ -81,14 +81,19 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool', 'lib/jquery.care
 			window.clearInterval(this.caretInterval);
 			
 			this.input.val('');
-				
-			this.sendAction({
-				str: this.string,
-				p: this.anchor,
-				
-				//Propriétés nécessaires pour cet outil
-				properties: requiredProps
-			});
+			
+			//On envoie une action que s'il y a du texte
+			if(this.string != ''){
+				this.sendAction({
+					str: this.string,
+					p: this.anchor,
+					
+					//Propriétés nécessaires pour cet outil
+					properties: requiredProps
+				});
+			}
+			else
+				this.env.clearBuf();
 		},
 		
 		refresh: function(){

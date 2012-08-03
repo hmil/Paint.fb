@@ -5,6 +5,7 @@ module.exports = function(mongoose){
 	return {
 		schemas: schemas,
 		
-		Discussion: mongoose.model('discussion', schemas.Discussion)
+		Discussion: mongoose.model('discussion', schemas.Discussion),
+		Action: mongoose.model('action', schemas.Action)
 	};
 };

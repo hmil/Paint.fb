@@ -25,12 +25,15 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			return ctx;
 		},
 		
-		sendAction: function(options){
-			options.tool = this.id;
+		sendAction: function(data){
+			data.properties = this.getCleanedProperties(data.properties);
 			
-			options.properties = this.getCleanedProperties(options.properties);
+			var action = {
+				tool: this.id,
+				data: data
+			};
 			
-			this.env.sendAction(options);
+			this.env.sendAction(action);
 		},
 		
 		drawAction: function(action, ctx){

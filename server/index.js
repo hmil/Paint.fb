@@ -4,7 +4,8 @@
 module.exports = function(app, mongoose){
 
 	var io = require('socket.io').listen(app),
-		access = require('./accessors.js')(mongoose);
+		models = require('./models')(mongoose),
+		access = require('./accessors.js')(mongoose, models);
 
 	//Configuration de sockets.io
 	io.configure(function () { 
@@ -12,26 +13,24 @@ module.exports = function(app, mongoose){
 		io.set("polling duration", 10); 
 		io.set('log level', 1);  
 	});
-	
-	var publishAction = (function () {
-		var counter = 0;
-		
-		return function(socket){
-			return function(data){
-				data.act.id = counter++;
-				console.log("action incomming, sending action with id : "+data.act.id);
-				
-				//Pour les tests on envoie l'action à tout le monde
-				socket.emit('pushAct', {mod: data.mod, act: data.act});
-				socket.broadcast.emit('pushAct', {mod: data.mod, act: data.act});
-			}
-		};
-	})();
-	
+
 	//Comportement de socket.io
 	io.sockets.on('connection', function (socket) {
-		socket.on('newAct', publishAction(socket));
-	});	
+		socket.on('newAct', access.pushAction(socket));
+		
+		//SOLUTION TEMPORAIRE
+		access.on('newAction', function(action){
+			socket.emit('pushAct', action);
+		});
+	});
+	
+	access.on('newAction', function(action){
+		models.Discussion.findById(action.mod, function (err, discuss) {
+			for(var i = 0 ; i < discuss.members.length ; i++){
+				//TODO : envoyer l'action aux clients concernés
+			}
+		});
+	});
 	
 	
 	//Configuration des méthodes de persistance des discussions

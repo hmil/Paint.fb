@@ -9,7 +9,7 @@ var express = require('express'),
 	mongoose = require('mongoose');
 	
 //configuration de mongoose
-mongoose.connect(process.env.MONGO_PATH || "mongodb://localhost/test", function(err) {
+mongoose.connect(process.env.MONGOLAB_URI || "mongodb://localhost/test", function(err) {
   if (err) { throw err; }
 });
 

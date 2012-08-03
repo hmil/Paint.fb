@@ -17,6 +17,8 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 			buffer.moveTo(e.x, e.y);
 			
 			this.path.push({x: e.x, y: e.y});
+			
+			//On rajoute cette coordonnée car chrome ne dessine rien si on fait un simple point
 			this.path.push({x: e.x+1, y: e.y});
 		},
 		

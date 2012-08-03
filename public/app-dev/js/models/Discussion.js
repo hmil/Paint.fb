@@ -15,6 +15,9 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			
 			this.actionCur = 0;
 			this.get('members').sort(function(a,b){return a-b});
+			
+			//Lorsque les actions initiales ont été chargées du serveur, on les affiche
+			this.on('sync', this.readActions, this);
 		},
 		
 		addMember: function(member){
@@ -29,7 +32,8 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			action en même temps, elles soient tout de même classées dans le même ordre chez les deux clients. 
 		*/
 		createAction: function(action){
-			app.socket.emit('newAct', {mod: this.id, act: action});
+			action.mod = this.id;
+			app.socket.emit('newAct', action);
 		},
 		
 		/*
@@ -50,7 +54,7 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 				
 				//On execute l'action avec l'outil approprié
 				var action = this.get('actions')[this.actionCur];
-				app.models.drawing.get('tools').get(action.tool).drawAction(action, this.canvas.get()[0].getContext('2d'));
+				app.models.drawing.get('tools').get(action.tool).drawAction(action.data, this.canvas.get()[0].getContext('2d'));
 				
 				//Et on passe à la suivante.
 				this.actionCur++;
