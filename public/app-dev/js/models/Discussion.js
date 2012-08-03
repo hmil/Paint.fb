@@ -2,15 +2,19 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 
 	app.Models.Discussion = Backbone.Model.extend({
 		
-		defaults: {
-			members: new Array(),
-			
-			//Stocke les actions de dessin dans l'ordre chronologique
-			actions: new Array()
-		},
-		
 		initialize: function(){
 			this.url = "/store/model/discussion";
+			
+			/* On initialise les tableaux ici et pas dans defaults car sinon c'est 
+			la même instance du tableau qui est partagée par toutes les instances de Discussion */
+			
+			//Stoke les participants à la discussion
+			if(typeof(this.get('members')) == 'undefined')
+				this.set('members', new Array());
+				
+			//Stocke les actions de dessin dans l'ordre chronologique
+			if(typeof(this.get('actions')) == 'undefined')
+				this.set('actions', new Array());
 			
 			
 			this.actionCur = 0;
