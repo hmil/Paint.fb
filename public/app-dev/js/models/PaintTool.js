@@ -35,8 +35,15 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 		},
 		
 		onMousemove: function(e){
-			//On ajoute la nouvelle coordonnée
-			this.path.push({x: e.x, y: e.y});
+		
+			// On récupère les coordonnées du dernier point. 
+			var lastPt = this.path[this.path.length-1];
+			
+			// Celui-ci doit différer du suivant sinon on n'ajoute pas le suivant car il ne servira à rien
+			if(e.x != lastPt.x && e.y != lastPt.y){
+				//On ajoute la nouvelle coordonnée
+				this.path.push({x: e.x, y: e.y});
+			}
 			
 			//On nettoie le buffer
 			this.env.clearBuf();
