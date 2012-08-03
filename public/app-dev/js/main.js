@@ -1,5 +1,12 @@
+requirejs.config({
+    paths: {
+        'socket.io': '../../socket.io/socket.io'
+    }
+});
+
 require([
 	"jquery",
+	"socket.io",
 	"lib/underscore",
 	"lib/backbone",
 	"lib/jquery-ui",
@@ -9,8 +16,7 @@ require([
 	"models/Drawing",
 	"collections/Discussions",
 	"collections/Tools",
-	"views/main",
-	"../socket.io/socket.io.js"],
+	"views/main"],
 	function($) {
 		//Toutes les dépendences ont été chargées
 		$(function() {

@@ -7,7 +7,8 @@
     //optimize: "none",
 
     paths: {
-        "jquery": "lib/require-jquery"
+        "jquery": "lib/require-jquery",
+		"socket.io": "empty:"
     },
 
     modules: [
