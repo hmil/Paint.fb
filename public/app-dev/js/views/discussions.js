@@ -60,8 +60,8 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			//Puis on le sélectionne
 			this.selectLabel(content);
 			
-			//Comme on a modifié la taille du submenu, on demande au menu de recalculer les tailles
-			app.views.menu.resize();
+			//Comme on signale la modification de hauteur
+			this.trigger('resized');
 		},
 		
 		selectDiscussion: function(discuss){	
@@ -75,6 +75,8 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		
 		removeDiscussion: function(foo, bar, options){
 			this.$('[data-id="'+options.model.cid+'"]').remove();
+			
+			this.trigger('resized');
 		}
 		
 	});

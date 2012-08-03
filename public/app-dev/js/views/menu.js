@@ -10,9 +10,11 @@ define(['app',
 		initialize : function() {
 			this.init_resize();
 			
-			app.views.discussions = new app.Views.discussions();
+			app.views.discussions = new app.Views.discussions()
+				.on('resized', this.resize, this);
 			
-			app.views.friendsList = new app.Views.friendsList();
+			app.views.friendsList = new app.Views.friendsList()
+				.on('resized', this.resize, this);
 		},
 		
 		init_resize: function(){
