@@ -16,7 +16,7 @@ exports.index_d = function(req, res){
 /*
  * GET app page
  */
-exports.app = function(req, res){
+exports.app = function(req, res){		
 	res.render('index', {
 		layout: false,
 		FB: {

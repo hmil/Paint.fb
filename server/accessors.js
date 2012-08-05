@@ -65,38 +65,65 @@ module.exports = exports = function(mongoose, models){
 	};
 		
 	accessor.pushAction = function(socket){
-		return function(data){
-			
-			var action = new models.Action(data);
-			
-			//Retourne l'id de l'action la plus récente
-			models.Action
-			.where('mod', data.mod)
-			.sort('id', -1)
-			.limit(1)
-			.exec(
-				function(err, res){
-					if(err) { throw err; }
-					
-					/* On incrémente l'id de la dernière action pour l'ajouter dans l'ordre croissant.
-						ATTENTION : cette technique n'est pas sure car une autre action peut s'insérer entre les deux requêtes.
-						TODO : trouver une méthode asynchrone sûre
-					*/
-					action.id = (res.length == 0) ? 0 : res[0].id+1;
-
-					action.save(function(err){
-						if(err){
-							console.log(err);
-							return;
+		return function(data){	
+		
+			//On cherche la discussion pour voir si l'utilisateur est autorisé à y poster
+			models.Discussion
+				.where('_id', data.mod)
+				.select('members')
+				.exec(
+					function(err, res){
+						if(err) { throw err; }
+						
+						if(res.length > 0){
+							var session = socket.handshake.session;
+							
+							//On recharge la session pour être sur que l'utilisateur ne s'est pas déconnecté
+							session.reload(function(){
+								var members = res[0].members;
+								
+								//L'utilisateur est autorisé
+								if(members.indexOf(session.fb_id) != -1){
+									addAction(members);
+								}
+							});
 						}
+					}
+				);
+			
+			//Cette fonction ajoute l'action sans tenir compte des autorisations
+			function addAction(members){
+				var action = new models.Action(data);
+				
+				//Retourne l'id de l'action la plus récente
+				models.Action
+				.where('mod', data.mod)
+				.sort('id', -1)
+				.limit(1)
+				.exec(
+					function(err, res){
+						if(err) { throw err; }
 						
-						console.log('action créée avec id = '+action.id);
-						
-						
-						accessor.emit('newAction', action);
-					});
-				}
-			);		
+						/* On incrémente l'id de la dernière action pour l'ajouter dans l'ordre croissant.
+							ATTENTION : cette technique n'est pas sure car une autre action peut s'insérer entre les deux requêtes.
+							TODO : trouver une méthode asynchrone sûre
+						*/
+						action.id = (res.length == 0) ? 0 : res[0].id+1;
+
+						action.save(function(err){
+							if(err){
+								console.log(err);
+								return;
+							}
+							
+							console.log('action créée avec id = '+action.id);
+							
+							
+							accessor.emit('newAction', {action: action, members: members});
+						});
+					}
+				);		
+			}
 		};	
 	};
 	
