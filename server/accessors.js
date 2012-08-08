@@ -31,7 +31,6 @@ module.exports = exports = function(mongoose, models){
 			
 			//Si on n'a rien trouvé
 			if(results.length == 0){
-				console.log('creating new discuss');
 				
 				//On crée une nouvelle discussion avec ces membres
 				var discuss = new models.Discussion({members: members});
@@ -66,7 +65,6 @@ module.exports = exports = function(mongoose, models){
 		
 	accessor.pushAction = function(socket){
 		return function(data){	
-		
 			//On cherche la discussion pour voir si l'utilisateur est autorisé à y poster
 			models.Discussion
 				.where('_id', data.mod)
@@ -76,7 +74,7 @@ module.exports = exports = function(mongoose, models){
 						if(err) { throw err; }
 						
 						if(res.length > 0){
-							var session = socket.handshake.session;
+							var session = socket.session();
 							
 							//On recharge la session pour être sur que l'utilisateur ne s'est pas déconnecté
 							session.reload(function(){
@@ -94,7 +92,6 @@ module.exports = exports = function(mongoose, models){
 			//Cette fonction ajoute l'action sans tenir compte des autorisations
 			function addAction(members){
 				var action = new models.Action(data);
-				
 				//Retourne l'id de l'action la plus récente
 				models.Action
 				.where('mod', data.mod)

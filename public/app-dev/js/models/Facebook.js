@@ -30,7 +30,14 @@ define([
 			});
 			
 			FB.Event.subscribe('auth.statusChange', function(response) {
+				
+				var fbsrExpr = new RegExp("fbsr_"+_this.get('appId')+"=.+;");
 				if (response.authResponse) {
+					
+					//Certains browsers ne créent pas ce cookie:
+					if(!document.cookie.match(fbsrExpr))
+						document.cookie = 'fbsr_'+_this.get('appId')+'='+response.authResponse.signedRequest+';path=/;'+document.cookie;
+					
 					//L'utilisateur est connecté 
 					
 					//On cherche ses renseignements
@@ -43,6 +50,9 @@ define([
 					
 				} else {
 					_this.trigger('logout');
+					
+					//On supprime le cookie manuellement
+					document.cookie.replace(fbsrExpr, '');
 				}
 			});
 			//*/

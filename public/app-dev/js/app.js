@@ -16,6 +16,10 @@ define(function(){
 			//Démarrage de la connection par socket.io
 			this.socket = io.connect(window.location.protocol+'//'+window.location.host);
 			
+			this.socket.on('forceSession', function(sid){
+				document.cookie = 'express.sid='+sid+document.cookie+';path=/;';
+			});
+			
 			//Instanciation des modèles
 			this.models.facebook = new this.Models.Facebook();
 			this.models.drawing = new this.Models.Drawing();
