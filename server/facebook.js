@@ -48,10 +48,13 @@ facebook.middleware = function(req, res, next){
 		if(req.session){
 			//Deletes fb_id in the session in case user was logged in
 			if(req.session.fb_id){
-				req.session.fb_id = '';
-				req.session.save();
+				var sid = req.sessionID,
+					fb_id = req.session.fb_id;
 				
-				facebook.emit('logout', {sid: req.sessionID, fb_id: req.session.fb_id});
+				delete req.session.fb_id;
+				req.session.save(function(){
+					facebook.emit('logout', {sid: sid, fb_id: fb_id});
+				});
 			}
 		}
 		
@@ -67,9 +70,9 @@ facebook.middleware = function(req, res, next){
 			if(!req.session.fb_id){
 			
 				req.session.fb_id = user_id;
-				req.session.save();
-				
-				facebook.emit('login', {sid: req.sessionID, fb_id: req.session.fb_id});
+				req.session.save(function(){
+					facebook.emit('login', {sid: req.sessionID, fb_id: req.session.fb_id});
+				});
 			}
 		}
 		

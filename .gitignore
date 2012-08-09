@@ -4,4 +4,5 @@ upload.bat
 
 Thumbs.db
 
+#contains test app variables (secret !!!)
 debug.js

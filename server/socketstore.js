@@ -22,7 +22,7 @@ module.exports = new function(){
 		return arr[key].length -1;
 	}
 	
-	//Retourne le sid correspondant au fb_id
+	//Retourne le fb_id correspondant au sid
 	function sid2fb_id(sid){
 		if(sid){
 			if(sid in idPairs){
@@ -39,6 +39,7 @@ module.exports = new function(){
 	this.add = function(socket){
 		
 		console.log("Ajout d'une socket : ");
+		console.log(" SID : "+socket.sessionID());
 		
 		if(socket.sessionID()){
 			socket.storeSID = addInArray(socket, socks, socket.sessionID());
@@ -53,7 +54,7 @@ module.exports = new function(){
 			var fb_id = sid2fb_id(socket.sessionID());
 			
 			if(typeof(fb_id) != 'undefined'){
-				console.log("  Authentification grace à la mémoire : "+fb_id);
+				console.log("  Authentification grace a la memoire : "+fb_id);
 				socket.storeFID = addInArray(socket, authSocks, fb_id);
 			}
 		}
@@ -62,11 +63,38 @@ module.exports = new function(){
 	};
 	
 	this.remove = function(socket){
-		console.log("Suppression d'une socket");
-		delete socks[socket.sessionID()][socket.storeSID];
+		var sid = socket.sessionID();
 		
-		if(typeof(socket.storeFID) != 'undefined')
-			delete authSocks[socket.session().fb_id][socket.storeFID];
+		console.log("Suppression d'une socket");
+		console.log(" SID : "+sid);
+		
+		delete socks[sid][socket.storeSID];
+		
+		if(typeof(socket.storeFID) != 'undefined'){
+			var fb_id = socket.session().fb_id;
+			if(typeof(fb_id) == 'undefined'){
+				console.log(" Recherche du FB_ID");
+				fb_id = sid2fb_id(sid);
+				if(typeof(fb_id) == 'undefined'){
+					console.log(" FB_ID not Found");
+					return;
+				}
+			}
+			
+			console.log("Supression -- desauthentification");
+			console.log(" FBID  : "+fb_id);
+			
+			delete authSocks[fb_id][socket.storeFID];
+			
+			if(socks[sid].length = 0){
+				console.log("  Suppression de la paire");
+				delete idPairs[sid];
+			}
+			this.deauth(sid, fb_id);
+			
+		}
+		else
+			console.log(" Already deauthenticated");
 	};
 	
 	this.getByFbID = function(fid){
@@ -80,13 +108,14 @@ module.exports = new function(){
 	this.auth = function(sid, fb_id){
 	
 		console.log("Authenticating :");
+		console.log(" SID : "+sid);
+		console.log(" FID : "+fb_id);
+		
 		
 		var sockets = this.getBySID(sid);
 		
-		if(typeof(sockets) != 'undefined'){
-			for(var i = 0 ; i < sockets.length ; i++){
-				sockets[i].storeFID = addInArray(sockets[i], authSocks, fb_id);
-			}
+		for(var i in sockets){
+			sockets[i].storeFID = addInArray(sockets[i], authSocks, fb_id);
 		}
 		
 		idPairs[sid] = fb_id;
@@ -96,6 +125,9 @@ module.exports = new function(){
 	
 	this.deauth = function(sid, fb_id){
 		console.log("Deauthenticating");
+		console.log(" SID : "+sid);
+		console.log(" FID : "+fb_id);
+		
 		var sockets = this.getByFbID(fb_id);
 		
 		for(var i in sockets){

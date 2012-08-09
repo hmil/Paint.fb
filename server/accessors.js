@@ -77,12 +77,20 @@ module.exports = exports = function(mongoose, models){
 							var session = socket.session();
 							
 							//On recharge la session pour être sur que l'utilisateur ne s'est pas déconnecté
-							session.reload(function(){
-								var members = res[0].members;
-								
-								//L'utilisateur est autorisé
-								if(members.indexOf(session.fb_id) != -1){
-									addAction(members);
+							session.reload(function(){								
+								if(session.fb_id){
+									var members = res[0].members;
+									
+									//L'utilisateur est autorisé
+									if(members.indexOf(session.fb_id) != -1){
+										addAction(members);
+									}
+									else{
+										console.log("User cannot push action in this discuss");
+									}
+								}
+								else{
+									console.log("User cannot push action : user not authenticated");
 								}
 							});
 						}

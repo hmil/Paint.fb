@@ -2,13 +2,12 @@ var routes = require('./routes.js'),
 	express = require('express'),
 	app = module.exports= express.createServer();
 
-module.exports = function(facebook){
+module.exports = function(){
 	app.configure(function(){
 		app.set('views', __dirname + '/../views');
 		app.set('view engine', 'jade');
 		app.use(express.bodyParser());
 		app.use(express.methodOverride());
-		app.use(facebook.middleware);
 		app.use(app.router);
 		app.use(express.static(__dirname + '/../public'));
 	});
