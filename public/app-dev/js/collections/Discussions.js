@@ -14,8 +14,12 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Discussion'], function(
 				
 				if(model)
 					model.pushAction(data);
+				//On cree la discussion
+				else{
+					_this.startWithId(data.mod);
+				}
 				
-			}, this);
+			});
 		},
 		
 		getByFriendId : function(fid){

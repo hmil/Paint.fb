@@ -6,7 +6,12 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		initialize : function(){
 			this.tp_friendInfo = _.template($('#tp_friendInfo').html());
 			
-			app.collections.discussions	.on('add', this.switchDiscussion, this)
+			this.showingBench = false;
+			
+			app.collections.discussions	.on('add', function(d){
+				if(!this.showingBench)
+					this.switchDiscussion(d);
+				}, this)
 										.on('selected', this.switchDiscussion, this)
 										.on('remove', this.removeDiscussion, this);
 		},
@@ -14,6 +19,8 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		showFriendInfo : function(friend){
 			//On enferme la variable this
 			var _this = this;
+			
+			this.showingBench = false;
 			
 			/* On génère le contenu grâce à la template */
 			var content = $(this.tp_friendInfo(friend));
@@ -33,6 +40,7 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		},
 		
 		switchDiscussion: function(discuss){
+			this.showingBench = true;
 			/* On affiche l'espace de dessin */
 			this.$el.children().detach();
 			this.$el.empty().append(app.views.drawingBench.getBench(discuss));
@@ -43,12 +51,16 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		},
 		
 		removeDiscussion: function(foo, bar, options){
-			if(options.model == app.models.drawing.discuss){
+		if(options.model == app.models.drawing.discuss){
 				var next = app.collections.discussions.first();
-				if(next)
+				if(next){
+					this.showingBench = true;
 					app.collections.discussions.startWithId(next.get('id'));
-				else
+				}
+				else{
 					this.$el.children().detach();
+					this.showingBench = false;
+				}
 			}
 		},
 		

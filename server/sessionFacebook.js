@@ -35,6 +35,10 @@ module.exports = facebook = Object.create(events.EventEmitter.prototype, {
 	}
 });
 
+facebook.isAuth = function(session){
+	return typeof(session.fb_id) != 'undefined';
+},
+
 //Fonction qui parse la requête
 facebook.middleware = function(req, res, next){
 	var namespace = req.facebook = {

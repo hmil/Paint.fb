@@ -6,24 +6,22 @@
 
 var express = require('express'),
 	mongoose = require('mongoose'),
-	facebook = require('./facebook.js'),
+	facebook = require('./sessionFacebook.js'),
 	sessionStore = new express.session.MemoryStore(),			
 	app = require('./webserver.js')(),
 	io = require('socket.io').listen(app),
-	sessSock = require('./sessionSocket.js')(io),
-	
 	glue = require('./socketglue.js').listen(io),
 		
-		
+	sessSock = require('./sessionSocket.js')(glue, {
+			store: sessionStore,
+			secret: 'bouzibouzi',
+			key: 'express.sid'}),
+	
 	models = require('./models')(mongoose),
 	access = require('./accessors.js')(mongoose, models),
 	socketStore = require('./socketstore.js');
 	
-	glue.use(express.cookieParser());
-	glue.use(express.session({
-			store: sessionStore,
-			secret: 'bouzibouzi',
-			key: 'express.sid'}));
+	
 	glue.use(facebook.middleware);
 
 //configuration de mongoose
@@ -87,5 +85,6 @@ facebook.on('login', function(data){
 
 //Configuration des méthodes de persistance des discussions
 app.post('/store/model/discussion', access.getDiscussion);
+app.put('/store/model/discussion', access.getDiscussion);
 app.get('/store/collection/discussions', access.getDiscussionCollection);	
 

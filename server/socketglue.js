@@ -1,5 +1,33 @@
-//socketglue.js
+/*		=== socketglue.js ===
 
+	Use the glue to stick middlewares ahead of socket.io 
+	like you'd do with express;
+	
+	middleware execution priority will look like this :
+	
+	[incomming request] -> glue -> socket.io -> express
+	
+	setup :
+	
+	var express = require('express'),
+		app = express.createServer(),
+		io = require('socket.io').listen(app),
+		glue = require('lib/socketglue.js').listen(io);
+	
+	// Bodyparser will only be called if the incomming request
+	// isn't consumed by socket.io (which is what we expect)
+	app.use(express.bodyParser());
+	
+	//But we want to be able to use sessions with our sockets
+	glue.use(express.cookieParser());
+	glue.use(express.session({store: foo, secret: 'bar'}));
+	
+	---
+	
+	See also sessionSocket.js for full socket.io session support
+	
+*/
+	
 var glue = module.exports = {
 	modules: new Array(),
 	listen : function(io){
@@ -36,7 +64,8 @@ var glue = module.exports = {
 		return {
 			use:	function(module){
 				glue.modules.push(module);
-			}
+			},
+			io: io
 		};
 	}	
 }
