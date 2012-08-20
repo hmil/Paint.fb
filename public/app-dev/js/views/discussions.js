@@ -57,8 +57,10 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			
 			//On ajoute le label à la liste
 			this.list.append(content);
-			//Puis on le sélectionne
-			this.selectLabel(content);
+			//Puis on le sélectionne si ça ne dérange pas l'utilisateur (pas de discuss en cours)
+			if(!this.$('.active').length){
+				this.selectLabel(content);
+			}
 			
 			//Comme on signale la modification de hauteur
 			this.trigger('resized');
@@ -71,12 +73,18 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		selectLabel: function(label){
 			label.parent().children('li').removeClass('active').children('.conferenceLabel_close').hide();
 			label.addClass('active').children('.conferenceLabel_close').show();
+			
+			this.trigger('selected');
 		},
 		
 		removeDiscussion: function(foo, bar, options){
 			this.$('[data-id="'+options.model.cid+'"]').remove();
 			
 			this.trigger('resized');
+		},
+		
+		unselect: function(){
+			this.$('.active').removeClass('active');
 		}
 		
 	});

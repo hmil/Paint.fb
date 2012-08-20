@@ -78,13 +78,8 @@ define([
 			if(discuss.cid != this.model.discuss.cid){
 				this.model.discuss = discuss;
 				
-				if(!discuss.canvas){
-					discuss.canvas = this.canvas.clone();
-				}
-				else{
-					//dans tout les cas, il faut adapter la largeur du canvas
-					discuss.canvas.width(this.canvas.width()).height(this.canvas.height());
-				}
+				//dans tout les cas, il faut adapter la largeur du canvas
+				discuss.canvas.width(this.canvas.width()).height(this.canvas.height());
 				
 				this.$el.find('#canvas').replaceWith(discuss.canvas);
 				this.canvasCtx = discuss.canvas.get()[0].getContext('2d');

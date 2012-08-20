@@ -147,8 +147,10 @@ module.exports = exports = function(mongoose, models){
 						}
 					);
 				}
-				else
+				else{
 					console.log("user is not authenticated");
+					console.log(session);
+				}
 			});			
 		};	
 	};

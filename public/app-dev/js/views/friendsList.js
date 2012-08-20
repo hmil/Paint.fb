@@ -54,7 +54,8 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		},
 		
 		update: function(list){
-		
+			var _this = this;
+			
 			//Copie du filtre de recherche
 			var filter = this.filter.val();
 			
@@ -78,11 +79,17 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 				$(this).parent().parent().children('li').removeClass('active');
 				$(this).parent().addClass('active');
 				
+				_this.trigger('selected', $(this).attr('data-uid'));
+				
 				app.views.contentArea.showFriendInfo(app.models.facebook.getFriend($(this).attr('data-uid')));
 			});
 			
 			//Ajout du contenu dans la liste
 			this.list.append(content);
+		},
+		
+		unselect: function(){
+			this.$('.active').removeClass('active');
 		}
 	});
 });

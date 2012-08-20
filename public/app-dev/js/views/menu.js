@@ -10,11 +10,14 @@ define(['app',
 		initialize : function() {
 			this.init_resize();
 			
-			app.views.discussions = new app.Views.discussions()
+			var discuss = app.views.discussions = new app.Views.discussions()
 				.on('resized', this.resize, this);
 			
-			app.views.friendsList = new app.Views.friendsList()
-				.on('resized', this.resize, this);
+			var friendsList = app.views.friendsList = new app.Views.friendsList()
+				.on('resized', this.resize, this)
+				.on('selected', discuss.unselect, discuss)
+				
+			discuss.on('selected', friendsList.unselect, friendsList);
 		},
 		
 		init_resize: function(){

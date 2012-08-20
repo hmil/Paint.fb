@@ -16,6 +16,11 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			if(typeof(this.get('actions')) == 'undefined')
 				this.set('actions', new Array());
 			
+			this.canvas = $('<canvas>')
+				.attr({id: "canvas",
+						width: app.models.drawing.get('canvasWidth'),
+						height: app.models.drawing.get('canvasHeight')})
+				.css('background-color', 'white');
 			
 			this.actionCur = 0;
 			this.get('members').sort(function(a,b){return a-b});
