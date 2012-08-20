@@ -58,8 +58,13 @@ define([
 			//*/
 			
 			/* OFFLINE MODE
+			var fbsrExpr = new RegExp("fbsr_"+_this.get('appId')+"=.+;");
+			
 			window.setTimeout(function(){
-				_this.set('me', {name: "MILANO", uid: "00123456789"});
+				_this.set('me', {name: "MILANO", uid: "100000586676512"});
+				if(!document.cookie.match(fbsrExpr))
+					document.cookie = 'fbsr_'+_this.get('appId')+'=YOUR_AWESOME_SIGNED_REQUEST;path=/;'+document.cookie;
+			
 				_this.trigger('login');
 			}, 1000);
 			//*/
