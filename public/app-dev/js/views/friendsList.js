@@ -57,12 +57,12 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			var _this = this;
 			
 			//Copie du filtre de recherche
-			var filter = this.filter.val();
+			var filter = '.*'+this.filter.val().toLowerCase()+'.*';
 			
 			//On applique le filtre et prépare la liste en même temps
 			list = _.groupBy(
 				_.filter(list, function(elem){
-					if(elem.name.substr(0, filter.length).toLowerCase() == filter.toLowerCase()){
+					if(elem.name.toLowerCase().match(filter)){
 						return true;
 					}
 					return false;
