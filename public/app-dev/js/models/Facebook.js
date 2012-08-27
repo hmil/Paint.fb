@@ -41,9 +41,8 @@ define([
 					//L'utilisateur est connecté 
 					
 					//On cherche ses renseignements
-					FB.Data.query("SELECT uid, name FROM user WHERE uid = me()")
-					.wait(function(me) {
-						_this.set('me', me[0]);
+					FB.api("/fql?q="+encodeURIComponent('SELECT uid, name FROM user WHERE uid = me()'), function(me) {
+						_this.set('me', me.data[0]);
 					});
 	
 					_this.trigger('login');
@@ -106,9 +105,8 @@ define([
 			var _this = this;
 			
 			//*
-			FB.Data.query("SELECT uid, name, pic_square, online_presence FROM user WHERE uid IN ( SELECT uid2 FROM friend WHERE uid1 = me()) ORDER BY name")
-			.wait(function(response) {
-				_this.set('friendsList', response);
+			FB.api('/fql?q='+encodeURIComponent('SELECT uid, name, pic_square, online_presence FROM user WHERE uid IN ( SELECT uid2 FROM friend WHERE uid1 = me()) ORDER BY name'), function(response) {
+				_this.set('friendsList', response.data);
 				_this.trigger('friendsListRefreshed', _this.get('friendsList'));
 				if($.isFunction(cb))
 					cb(_this.get('friendsList'));
