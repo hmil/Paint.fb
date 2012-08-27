@@ -58,11 +58,18 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 		},
 		
 		readActions: function(){
+		
+			var actions = this.get('actions'),
+				action;
+			
+			function getAction(id){
+				return _.find(actions, function(i){ 
+					return i.id == id;
+				});
+			}
+
 			//tant qu'il y a des actions à executer
-			while(this.get('actions')[this.actionCur]){
-				
-				//On execute l'action avec l'outil approprié
-				var action = this.get('actions')[this.actionCur];
+			while(action = getAction(this.actionCur)){
 				app.models.drawing.get('tools').get(action.tool).drawAction(action.data, this.canvas.get()[0].getContext('2d'));
 				
 				//Et on passe à la suivante.
