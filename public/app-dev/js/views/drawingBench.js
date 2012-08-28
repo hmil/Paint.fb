@@ -122,6 +122,9 @@ define([
 				nh = ch*nw/cw;
 			}
 			
+			nh = Math.floor(nh);
+			nw = Math.floor(nw);
+			
 			this.canvas.width(nw).height(nh);
 			this.buffer.width(nw).height(nh);
 			
