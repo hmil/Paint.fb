@@ -6,7 +6,8 @@
 		"express": "2.5.8",
 		"jade": ">= 0.0.1",
 		"socket.io": "0.8.5",
-		"mongoose": "2.7.x"
+		"mongoose": "2.7.x",
+		"connect-mongoose": "0.0.x"
 	},
  	"engines": {
 		"node": "0.8.x",

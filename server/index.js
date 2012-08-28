@@ -7,13 +7,13 @@
 var express = require('express'),
 	mongoose = require('mongoose'),
 	facebook = require('./sessionFacebook.js'),
-	sessionStore = new express.session.MemoryStore(),			
+	sessionStore = require("connect-mongoose")(express),		
 	app = require('./webserver.js')(),
 	io = require('socket.io').listen(app),
 	glue = require('./socketglue.js').listen(io),
 		
 	sessSock = require('./sessionSocket.js')(glue, {
-			store: sessionStore,
+			store: new sessionStore(),
 			secret: 'bouzibouzi',
 			key: 'express.sid'}),
 	
