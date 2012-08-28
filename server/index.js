@@ -25,7 +25,7 @@ var express = require('express'),
 	glue.use(facebook.middleware);
 
 //configuration de mongoose
-mongoose.connect(process.env.MONGOLAB_URI || "mongodb://localhost/test", function(err) {
+mongoose.connect(process.env.MONGO_URI, function(err) {
   if (err) { throw err; }
 });
 
