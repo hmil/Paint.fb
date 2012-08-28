@@ -121,9 +121,8 @@ module.exports = exports = function(mongoose, models){
 	};
 		
 	accessor.pushAction = function(socket){
-		var session = socket.session();
 		return function(data){
-		
+			var session = socket.session();
 			session.reload(function(){
 				if(facebook.isAuth(session)){
 					models.Discussion
@@ -148,8 +147,8 @@ module.exports = exports = function(mongoose, models){
 					);
 				}
 				else{
-					console.log("user is not authenticated");
-					console.log(session);
+					console.log("user is not authenticated :");
+					console.log("SID : "+socket.sessionID());
 				}
 			});			
 		};	
