@@ -5,13 +5,16 @@ define(['app', 'lib/backbone', 'lib/underscore'], function(app){
 			lineWidth: 5,
 			maxLineWidth: 80,
 			minLineWidth: 1,
-			color: 'black',
+			color1: 'black',
+			color2: 'white',
 			font: 'Arial',
 			fontSize: 20,
 			maxFontSize: 200,
 			minFontSize: 1,
 			italic: false,
-			bold: false
+			bold: false,
+			fill: false,
+			stroke: true
 		},
 		
 		initialize: function(){

@@ -1,6 +1,6 @@
 define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool', 'lib/jquery.caret'], function(app){
 	
-	var requiredProps = ['color', 'lineWidth', 'italic', 'bold', 'fontSize', 'fontFamily'];
+	var requiredProps = ['color1', 'lineWidth', 'italic', 'bold', 'fontSize', 'fontFamily'];
 	
 	app.Models.TextTool = app.Models.Tool.extend({
 		
@@ -148,8 +148,8 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool', 'lib/jquery.care
 		updateContext: function(ctx, properties){
 			properties = this.getCleanedProperties(requiredProps, properties);
 			
-			ctx.fillStyle = properties.color;
-			ctx.strokeStyle = properties.color;
+			ctx.fillStyle = properties.color1;
+			ctx.strokeStyle = properties.color1;
 			ctx.lineWidth = properties.lineWidth;
 			
 			var attributes 	= 	((properties.italic == true) ? 'italic ' : '')

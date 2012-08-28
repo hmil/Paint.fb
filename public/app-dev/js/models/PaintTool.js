@@ -8,6 +8,8 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 		
 		initialize: function(){
 			this.path = new Array();
+			
+			this.properties = ['color1', 'lineWidth'];
 		},
 		
 		onMousedown: function(e){
@@ -27,7 +29,7 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 			this.sendAction({
 				path: this.path,
 				//Propriétés nécessaires pour cet outil
-				properties: ['color', 'lineWidth']
+				properties: this.properties
 			});
 			
 			//on réinitialise le tableau mémoire
@@ -78,9 +80,9 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 		updateContext: function(ctx, properties){
 		
 			//S'assure que les "properties" requises soient fournies et les remplace par celles de l'environnement au besoin
-			properties = this.getCleanedProperties(['color', 'lineWidth'], properties);
+			properties = this.getCleanedProperties(this.properties, properties);
 			
-			ctx.strokeStyle = properties.color;
+			ctx.strokeStyle = properties.color1;
 			ctx.lineWidth = properties.lineWidth;
 			ctx.lineCap = 'round';
 			ctx.lineJoin = 'round';

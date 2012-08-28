@@ -8,6 +8,8 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 		
 		initialize: function(){
 			this.p1 = {x: 0, y:0};
+			
+			this.properties = ['color1', 'lineWidth'];
 		},
 		
 		onMousedown: function(e){	
@@ -20,7 +22,7 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 				p2: {x: e.x, y: e.y},
 				
 				//Propriétés nécessaires pour cet outil
-				properties: ['color', 'lineWidth']
+				properties: this.properties
 			});
 		},
 		
@@ -52,9 +54,9 @@ define(['app', 'lib/backbone', 'lib/underscore', 'models/Tool'], function(app){
 		},
 		
 		updateContext: function(ctx, properties){
-			properties = this.getCleanedProperties(['color', 'lineWidth'], properties);
+			properties = this.getCleanedProperties(this.properties, properties);
 			
-			ctx.strokeStyle = properties.color;
+			ctx.strokeStyle = properties.color1;
 			ctx.lineWidth = properties.lineWidth;
 			ctx.lineCap = 'round';
 		}

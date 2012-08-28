@@ -141,6 +141,7 @@ html, body, #content, #main_frame {
 	border-spacing: 2px;
 	border-collapse: separate;
 	float: left;
+	margin-left: 60px;
 }
 
 .currentColor {
@@ -149,9 +150,16 @@ html, body, #content, #main_frame {
 	cursor: pointer;
 	border: 1px solid black;
     border-radius: 2px 2px 2px 2px;
-    box-shadow: 3px 3px #999999;
-	float: left;
-	margin: 6px 4px;
+	position: absolute;
+}
+
+.currentColor.primary {
+	margin: 0;
+}
+
+.currentColor.secondary {
+	margin: 10px;
+	box-shadow: 3px 3px #999999;
 }
 
 #colorPalette td {

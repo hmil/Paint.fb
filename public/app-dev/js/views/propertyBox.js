@@ -39,8 +39,11 @@ define([
 			this.palette = new app.Views.ColorPalette({
 				el: this.$el.find('#colorPalette')
 			})
-			.on('colorChanged', function(col){
-				this.properties.set({color: col});
+			.on('color1Changed', function(col){
+				this.properties.set({color1: col});
+			}, this)
+			.on('color2Changed', function(col){
+				this.properties.set({color2: col});
 			}, this);
 			
 			
@@ -72,6 +75,12 @@ define([
 			
 			this.brushPreview = this.$('#brushPreview').get()[0].getContext('2d');
 			
+			
+			/* Initialisation des checkbox de remplissage/contour */
+			
+			this.$('.fillSwitch').change(function(e){
+				_this.properties.set($(this).val(), $(this).is(':checked'));
+			});
 			
 			/* Initialisation du select de polices */
 			
@@ -114,7 +123,7 @@ define([
 		
 		refreshBrushPreview: function(canvasRatio){
 			
-			this.brushPreview.fillStyle = this.properties.get('color');
+			this.brushPreview.fillStyle = this.properties.get('color1');
 			
 			this.brushPreview.clearRect(0, 0, 100, 100);
 			
@@ -130,6 +139,10 @@ define([
 			switch(tool.get('id')){
 				case 'text':
 					filter = '#colorPalette, #fontSize, #fontAttributes';
+					break;
+				case 'ellipse':
+				case 'rect':
+					filter = '#colorPalette, #brushSize, #fillSwitch';
 					break;
 			}
 			
