@@ -16,8 +16,8 @@ Roadmap
 * Manage discussions  **done**
 * Drawing with standard graphic tools  **done**
 * Auth mechanisms (http + socket)  **done**
+* Fix bugs with authorisation  **done**
 
-* Fix bugs with authorisation
 * Add Terms of use and Privacy policy
 * Allow conferences (3+ people sharing the same bench)
 * Add more advanced drawing settings/tools
