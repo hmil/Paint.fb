@@ -46,7 +46,7 @@ module.exports = exports = function(mongoose, models){
 						return;
 					}
 					
-					console.log('action créée avec id = '+action.id);
+					//console.log('action créée avec id = '+action.id);
 					
 					
 					accessor.emit('newAction', {action: action, members: members});
@@ -83,7 +83,7 @@ module.exports = exports = function(mongoose, models){
 						
 						discuss.save(function (err) {
 							if (err) { throw err; }
-							console.log("Discussion crée avec l'id : "+discuss._id);
+							//console.log("Discussion crée avec l'id : "+discuss._id);
 							
 							res.send('{"id": "'+discuss._id+'"}');
 						});
@@ -95,7 +95,7 @@ module.exports = exports = function(mongoose, models){
 						models.Action.find({'mod': discuss.id}, function(err, actions){
 							if (err) { throw err; }
 						
-							console.log('sending existng discuss with id : '+discuss.id);
+							//console.log('sending existng discuss with id : '+discuss.id);
 						
 							res.send('{"id": "'+discuss._id+'"'
 								+ ',"members" : '+JSON.stringify(discuss.members)
@@ -140,15 +140,15 @@ module.exports = exports = function(mongoose, models){
 									addAction(members, data);
 								}
 								else{
-									console.log("User cannot push action in this discuss");
+									//console.log("User cannot push action in this discuss");
 								}
 							}
 						}
 					);
 				}
 				else{
-					console.log("user is not authenticated :");
-					console.log("SID : "+socket.sessionID());
+					//console.log("user is not authenticated :");
+					//console.log("SID : "+socket.sessionID());
 				}
 			});			
 		};	

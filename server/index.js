@@ -41,6 +41,9 @@ io.configure(function () {
 	io.set("transports", ["xhr-polling"]);
 	io.set("polling duration", 10); 
 	io.set('log level', 1);  
+	
+	//Workaround avoiding "disconnect" issue (see https://github.com/LearnBoost/socket.io/issues/777)
+	io.set('close timeout', 60*60*24);
 });
 
 //Comportement de socket.io
@@ -51,7 +54,7 @@ io.sockets.on('connection', function (socket) {
 	
 	socket
 		.on('newAct', access.pushAction(socket))
-		.on('disconnect', function(){socketStore.remove(socket)});
+		.on('disconnect', function(){socketStore.remove(socket);});
 	
 });
 

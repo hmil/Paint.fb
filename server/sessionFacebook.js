@@ -48,9 +48,7 @@ facebook.middleware = function(req, res, next){
 	
 	function abortAuth(message){
 		namespace.errinfo = message;
-		
-		console.log("FB auth refused");
-		
+				
 		if(req.session){
 			//Deletes fb_id in the session in case user was logged in
 			if(req.session.fb_id){
@@ -70,16 +68,14 @@ facebook.middleware = function(req, res, next){
 	function acceptAuth(user_id){
 		namespace.authenticated = true;
 		namespace.user_id = data.user_id;
-		
-		console.log("FB auth accepted");
-		
+				
 		if(req.session){
 			//Creates fb_id in the session in case user was not logged in
 			if(!req.session.fb_id){
 			
-				console.log("Logging user in :");
+				/*console.log("Logging user in :");
 				console.log("SID : "+req.sessionID);
-				console.log("FID : "+user_id);
+				console.log("FID : "+user_id);*/
 				
 				req.session.fb_id = user_id;
 				req.session.save(function(){
